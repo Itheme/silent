@@ -20,6 +20,9 @@
 		3826DD5B23E97B6200045BAA /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD5A23E97B6200045BAA /* Level.swift */; };
 		3826DD6023E9854C00045BAA /* Level1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3826DD5F23E9854C00045BAA /* Level1.plist */; };
 		3826DD6323E9888600045BAA /* amb01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3826DD6223E9888600045BAA /* amb01.mp3 */; };
+		3826DD6523E9948500045BAA /* LevelsConsistency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD6423E9948500045BAA /* LevelsConsistency.swift */; };
+		3826DD6723E9971300045BAA /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD6623E9971300045BAA /* Player.swift */; };
+		3826DD6923E997CB00045BAA /* AbstractAudible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD6823E997CB00045BAA /* AbstractAudible.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +62,9 @@
 		3826DD5A23E97B6200045BAA /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		3826DD5F23E9854C00045BAA /* Level1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Level1.plist; sourceTree = "<group>"; };
 		3826DD6223E9888600045BAA /* amb01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = amb01.mp3; sourceTree = "<group>"; };
+		3826DD6423E9948500045BAA /* LevelsConsistency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelsConsistency.swift; sourceTree = "<group>"; };
+		3826DD6623E9971300045BAA /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		3826DD6823E997CB00045BAA /* AbstractAudible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractAudible.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +134,7 @@
 		3826DD3A23E9790C00045BAA /* joTests */ = {
 			isa = PBXGroup;
 			children = (
+				3826DD6423E9948500045BAA /* LevelsConsistency.swift */,
 				3826DD3B23E9790C00045BAA /* joTests.swift */,
 				3826DD3D23E9790C00045BAA /* Info.plist */,
 			);
@@ -147,6 +154,8 @@
 			isa = PBXGroup;
 			children = (
 				3826DD5A23E97B6200045BAA /* Level.swift */,
+				3826DD6623E9971300045BAA /* Player.swift */,
+				3826DD6823E997CB00045BAA /* AbstractAudible.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -302,9 +311,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3826DD6923E997CB00045BAA /* AbstractAudible.swift in Sources */,
 				3826DD2723E9790800045BAA /* GameScene.swift in Sources */,
 				3826DD2923E9790800045BAA /* GameViewController.swift in Sources */,
 				3826DD5B23E97B6200045BAA /* Level.swift in Sources */,
+				3826DD6723E9971300045BAA /* Player.swift in Sources */,
 				3826DD2123E9790800045BAA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -314,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3826DD3C23E9790C00045BAA /* joTests.swift in Sources */,
+				3826DD6523E9948500045BAA /* LevelsConsistency.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

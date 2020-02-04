@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVKit
 
 protocol StateCollector {
     func collectState() -> [String:AnyObject]?
@@ -45,17 +44,12 @@ extension CGPoint {
 }
 
 // area sound source
-class Ambiance: NSObject {
-    var audioPlayer: AVAudioPlayer
-    var pos: CGPoint
+class Ambiance: AbstractAudible {
     var inverted: Bool
-    init(details: [String:AnyObject]) {
-        let urlString = details["url"] as! String
-        let url = Bundle.main.url(forResource: urlString, withExtension: "mp3")!
-        self.pos = CGPoint(string: details["pos"] as? String)!
+    override init(details: [String:AnyObject]) {
         self.inverted = (details["inverted"] as? Bool) ?? false
+        super.init(details: details)
         
-        self.audioPlayer = try! AVAudioPlayer(contentsOf: url)
         self.audioPlayer.numberOfLoops = -1
         self.audioPlayer.prepareToPlay()
     }
@@ -79,14 +73,9 @@ extension Ambiance: Perspective {
 }
 
 // point sound source
-class Audible: NSObject {
-    var audioPlayer: AVAudioPlayer
-    var pos: CGPoint
-    init(details: [String:AnyObject]) {
-        let urlString = details["url"] as! String
-        let url = Bundle.main.url(forResource: urlString, withExtension: "mp3")!
-        self.pos = CGPoint(string: details["pos"] as? String)!
-        self.audioPlayer = try! AVAudioPlayer(contentsOf: url)
+class Audible: AbstractAudible {
+    override init(details: [String:AnyObject]) {
+        super.init(details: details)
     }
 }
 
@@ -111,16 +100,7 @@ extension Audible: Perspective {
     }
 }
 
-class Player: NSObject {
-    var pos: CGPoint
-    var direction: CGPoint
-    init(initialPoint: CGPoint, initialDirection: CGPoint) {
-        self.pos = initialPoint
-        self.direction = initialDirection
-    }
-}
-
-class Level: NSObject {
+public class Level: NSObject {
     private var details: [String:AnyObject]
     var player: Player
     var ambiances: [Ambiance]
@@ -152,4 +132,3 @@ class Level: NSObject {
         self.running = true
     }
 }
-
