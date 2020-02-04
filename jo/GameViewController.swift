@@ -60,7 +60,7 @@ extension GameViewController: ControlDelegate {
         guard let level = self.level else {
             return
         }
-        level.playerMovement(speed: speed, rotation: rotation)
+        level.playerMovement(speed: speed / 10.0, rotation: rotation*10)
     }
     func action() {
         print("Action!")

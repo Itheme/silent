@@ -8,6 +8,7 @@
 
 import UIKit
 import JavaScriptCore
+import AVFoundation
 
 protocol StateCollector {
     func collectState() -> [String:AnyObject]?
@@ -46,9 +47,15 @@ extension CGPoint {
 
 // area sound source
 class Ambiance: AbstractAudible {
-    var inverted: Bool
+    var inverted: Bool = false
+    var inversionRadius0: Float = 1
+    var inversionRadius1: Float = 1
     override init(details: [String:AnyObject]) {
-        self.inverted = (details["inverted"] as? Bool) ?? false
+        if let inversion = details["inversion"] as? [String:AnyObject] { // inversion radiuses
+            self.inverted = true
+            self.inversionRadius0 = inversion["r0"] as! Float
+            self.inversionRadius1 = inversion["r1"] as! Float
+        }
         super.init(details: details)
         
         self.audioPlayer.numberOfLoops = -1
@@ -66,7 +73,21 @@ extension Ambiance: StateCollector {
 
 extension Ambiance: Perspective {
     func applyPlayerPerspective(player: Player, run: Bool = false) {
-        self.audioPlayer.setVolume(volumeScale(distance: dist(pos0: self.pos, pos1: player.pos)), fadeDuration: 0.05)
+        let fade = (run ?0:0.05)
+        if self.inverted {
+            let distance = dist(pos0: self.pos, pos1: player.pos)
+            if distance > self.inversionRadius0 {
+                if distance > self.inversionRadius1 {
+                    self.audioPlayer.setVolume(1, fadeDuration: fade)
+                } else {
+                    self.audioPlayer.setVolume(volumeScale(distance: self.inversionRadius1 - distance), fadeDuration: fade)
+                }
+            } else {
+                self.audioPlayer.setVolume(0, fadeDuration: fade)
+            }
+        } else {
+            self.audioPlayer.setVolume(volumeScale(distance: dist(pos0: self.pos, pos1: player.pos)), fadeDuration: fade)
+        }
         if (run) {
             self.audioPlayer.play()
         }
@@ -77,6 +98,9 @@ extension Ambiance: Perspective {
 class Audible: AbstractAudible {
     override init(details: [String:AnyObject]) {
         super.init(details: details)
+    
+        // TEMPORARY:
+        self.audioPlayer.numberOfLoops = -1
     }
 }
 
@@ -94,7 +118,27 @@ extension Audible: StateCollector {
 
 extension Audible: Perspective {
     func applyPlayerPerspective(player: Player, run: Bool = false) {
-        self.audioPlayer.setVolume(volumeScale(distance: dist(pos0: self.pos, pos1: player.pos)), fadeDuration: 0.05)
+        let fade = run ?0:0.05
+        let distance = dist(pos0: self.pos, pos1: player.pos)
+        let dx = Float(player.pos.x - self.pos.x)//distance
+        let dy = Float(player.pos.y - self.pos.y)//distance
+        self.audioPlayer.setVolume(0.3*volumeScale(distance: distance), fadeDuration: fade)
+        var angle = atan2f(dy, dx) - Float(player.direction)
+        if angle > Float.pi {
+            angle -= Float.pi * 2.0
+        }
+        if angle < -Float.pi {
+            angle += Float.pi * 2.0
+        }
+        if angle > Float.pi / 2.0 {
+            angle = Float.pi - angle
+        } else {
+            if angle < (-Float.pi / 2.0) {
+                angle = -Float.pi - angle
+            }
+        }
+        self.audioPlayer.pan = angle * 0.3
+        //print("\(dist(pos0: self.pos, pos1: player.pos))")
         if (run) {
             self.audioPlayer.play()
         }
@@ -110,6 +154,7 @@ public class Level: NSObject {
     let machine = JSVirtualMachine()!
     let context: JSContext
     let contextObjectPlayer: JSValue
+    let engine: AVAudioEngine = AVAudioEngine()
     init(details: [String:AnyObject]) {
         self.details = details
         self.context = JSContext(virtualMachine: self.machine)
@@ -153,10 +198,10 @@ public class Level: NSObject {
     func playerMovement(speed: CGFloat, rotation: CGFloat) {
         self.player.direction += rotation / 10.0
         if self.player.direction > CGFloat.pi {
-            self.player.direction -= CGFloat.pi
+            self.player.direction -= CGFloat.pi * 2.0
         }
         if self.player.direction < -CGFloat.pi {
-            self.player.direction += CGFloat.pi
+            self.player.direction += CGFloat.pi * 2.0
         }
         let dx: CGFloat = cos(self.player.direction)*speed
         let dy: CGFloat = sin(self.player.direction)*speed
@@ -164,6 +209,6 @@ public class Level: NSObject {
         self.player.pos.x += dy
 
         self.run()
-        print("Speed: \(speed), Rotation: \(self.player.direction)")
+        //print("Speed: \(speed), Rotation: \(self.player.direction)")
     }
 }

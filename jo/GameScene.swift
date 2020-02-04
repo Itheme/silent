@@ -21,6 +21,7 @@ class TouchTracker: NSObject {
     var touch: UITouch
     weak var scene: SKScene?
     let initialLocation: CGPoint
+    var speed: CGFloat = 0
     init(touch: UITouch, in scene: SKScene) {
         self.touch = touch
         self.scene = scene
@@ -58,7 +59,6 @@ class GameScene: SKScene {
         }
     }
     
-    
     func touchDown(touch: UITouch) {
         let tracker = TouchTracker(touch: touch, in: self)
         self.trackingTouches.append(tracker)
@@ -91,7 +91,8 @@ class GameScene: SKScene {
         }
         if let movementTracker = self.movementTracker {
             if movementTracker == tracker {
-                control.movement(speed: (pos.y - tracker.initialLocation.y) / self.size.height, rotation: (pos.x - touch.previousLocation(in: self).x) / self.size.width)
+                tracker.speed = (pos.y - tracker.initialLocation.y) / self.size.height
+                control.movement(speed: tracker.speed, rotation: (pos.x - touch.previousLocation(in: self).x) / self.size.width)
             }
         }
     }
@@ -143,8 +144,11 @@ class GameScene: SKScene {
         for t in touches { self.touchUp(touch: t, cancelled: true) }
     }
     
-    
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        if let tracker = self.movementTracker {
+            if let control = self.controlDelegate {
+                control.movement(speed: tracker.speed, rotation: 0)
+            }
+        }
     }
 }
