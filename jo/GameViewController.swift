@@ -11,9 +11,13 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
+    private var level: Level?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let levelDetailsURL = Bundle.main.url(forResource: "Level1", withExtension: "plist")!
+        let dict = NSDictionary.init(contentsOf: levelDetailsURL)
+        self.level = Level(details: dict as! [String : AnyObject])
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -29,6 +33,7 @@ class GameViewController: UIViewController {
             
             view.showsFPS = true
             view.showsNodeCount = true
+            self.level!.run()
         }
     }
 
