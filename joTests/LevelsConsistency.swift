@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import AVKit
 import jo
 
 protocol ConsistencyChecker {
@@ -21,14 +22,14 @@ extension Level: ConsistencyChecker {
             }
         }
         if let ambianceDetails = details["ambiances"] as? [[String:AnyObject]] {
-            guard ambianceDetails.allSatisfy(Ambiance.checkConsistency($0)) else {
-                return false
-            }
+            XCTAssert(ambianceDetails.allSatisfy { (details: [String : AnyObject]) -> Bool in
+                return Ambiance.checkConsistency(details: details)
+            })
         }
         if let audibleDetails = details["audibles"] as? [[String:AnyObject]] {
-            guard audibleDetails.allSatisfy(Audible.checkConsistency($0)) else {
-                return false
-            }
+            XCTAssert(audibleDetails.allSatisfy { (details: [String : AnyObject]) -> Bool in
+                Audible.checkConsistency(details: details)
+            })
         }
         return true
     }
@@ -37,6 +38,37 @@ extension Level: ConsistencyChecker {
 extension Player: ConsistencyChecker {
     static func checkConsistency(details: [String:AnyObject]) -> Bool {
         return true
+    }
+}
+
+extension AbstractAudible {
+    static func genericCheckConsistency(details: [String:AnyObject]) -> Bool {
+        if let urlString = details["url"] as? String {
+            if let url = Bundle.main.url(forResource: urlString, withExtension: "mp3") {
+                if let _ = try? AVAudioPlayer(contentsOf: url) {
+                    if let _ = details["pos"] as? String {
+                        return true
+                    }
+                    XCTFail("Pos not present")
+                }
+                XCTFail("Unable to load track \(urlString)")
+            }
+            XCTFail("Track \(urlString) not found")
+        }
+        XCTFail("Url not present")
+        return false
+    }
+}
+
+extension Ambiance: ConsistencyChecker {
+    static func checkConsistency(details: [String:AnyObject]) -> Bool {
+        return AbstractAudible.genericCheckConsistency(details: details)
+    }
+}
+
+extension Audible: ConsistencyChecker {
+    static func checkConsistency(details: [String:AnyObject]) -> Bool {
+        return AbstractAudible.genericCheckConsistency(details: details)
     }
 }
 

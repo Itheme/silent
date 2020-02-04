@@ -25,6 +25,8 @@
 		3826DD6923E997CB00045BAA /* AbstractAudible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD6823E997CB00045BAA /* AbstractAudible.swift */; };
 		3826DD6B23E9AD5E00045BAA /* ambtest.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3826DD6A23E9AD5E00045BAA /* ambtest.mp3 */; };
 		3826DD6D23E9D7F200045BAA /* steps01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3826DD6C23E9D7F100045BAA /* steps01.mp3 */; };
+		3826DD6F23E9EE4C00045BAA /* Ambiance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD6E23E9EE4C00045BAA /* Ambiance.swift */; };
+		3826DD7123E9F36B00045BAA /* Audible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD7023E9F36B00045BAA /* Audible.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,8 @@
 		3826DD6823E997CB00045BAA /* AbstractAudible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractAudible.swift; sourceTree = "<group>"; };
 		3826DD6A23E9AD5E00045BAA /* ambtest.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ambtest.mp3; sourceTree = "<group>"; };
 		3826DD6C23E9D7F100045BAA /* steps01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = steps01.mp3; sourceTree = "<group>"; };
+		3826DD6E23E9EE4C00045BAA /* Ambiance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ambiance.swift; sourceTree = "<group>"; };
+		3826DD7023E9F36B00045BAA /* Audible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audible.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,7 +162,9 @@
 			isa = PBXGroup;
 			children = (
 				3826DD5A23E97B6200045BAA /* Level.swift */,
+				3826DD6E23E9EE4C00045BAA /* Ambiance.swift */,
 				3826DD6623E9971300045BAA /* Player.swift */,
+				3826DD7023E9F36B00045BAA /* Audible.swift */,
 				3826DD6823E997CB00045BAA /* AbstractAudible.swift */,
 			);
 			path = Model;
@@ -324,6 +330,8 @@
 				3826DD2923E9790800045BAA /* GameViewController.swift in Sources */,
 				3826DD5B23E97B6200045BAA /* Level.swift in Sources */,
 				3826DD6723E9971300045BAA /* Player.swift in Sources */,
+				3826DD6F23E9EE4C00045BAA /* Ambiance.swift in Sources */,
+				3826DD7123E9F36B00045BAA /* Audible.swift in Sources */,
 				3826DD2123E9790800045BAA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
