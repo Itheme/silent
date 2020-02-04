@@ -196,7 +196,7 @@ public class Level: NSObject {
         self.running = true
     }
     func playerMovement(speed: CGFloat, rotation: CGFloat) {
-        self.player.direction += rotation / 10.0
+        self.player.set(speed: speed, direction: self.player.direction + (rotation / 10.0))
         if self.player.direction > CGFloat.pi {
             self.player.direction -= CGFloat.pi * 2.0
         }
