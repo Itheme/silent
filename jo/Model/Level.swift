@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JavaScriptCore
 
 protocol StateCollector {
     func collectState() -> [String:AnyObject]?
@@ -106,11 +107,29 @@ public class Level: NSObject {
     var ambiances: [Ambiance]
     var audibles: [Audible]
     var running: Bool = false
+    let machine = JSVirtualMachine()!
+    let context: JSContext
+    let contextObjectPlayer: JSValue
     init(details: [String:AnyObject]) {
         self.details = details
-        
+        self.context = JSContext(virtualMachine: self.machine)
+        self.context.evaluateScript("var console = {}; var player = {'pos': {}};")
+        self.contextObjectPlayer = self.context.objectForKeyedSubscript("player")
+        let logClosure: @convention (block) (String, String, String, String) -> Void = { fmt, a, b, c in
+            print(fmt, a, b, c)
+        }
+        self.context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
+
+        //self.context.evaluateScript("console.log('stuff')")
+        self.context.setObject(22, forKeyedSubscript: "number" as NSString)
+        self.context.evaluateScript("console.log('hi from js')")
+        self.context.evaluateScript("number = number + 20")
+        print("\(self.context.objectForKeyedSubscript("number"))")
         let playerDetails = (details["player"] as? [String:AnyObject]) ?? [:]
-        self.player = Player(initialPoint: (playerDetails["pos"] as? CGPoint) ?? CGPoint(x: 0, y: 0), initialDirection: (playerDetails["direction"] as? CGPoint) ?? CGPoint(x: 0, y: 0))
+        self.player = Player(initialPoint: (playerDetails["pos"] as? CGPoint) ?? CGPoint(x: 0, y: 0), initialDirection: (playerDetails["direction"] as? CGFloat) ?? 0, scriptRepresentation: self.contextObjectPlayer)
+        self.player.updateJSContext()
+        //self.context.evaluateScript("player.pos.x = 100")
+        print("\(self.contextObjectPlayer.objectForKeyedSubscript("pos.x")!)")
         if let ambianceDetails = details["ambiances"] as? [[String:AnyObject]] {
             self.ambiances = ambianceDetails.map {
                 Ambiance(details: $0)
@@ -130,5 +149,21 @@ public class Level: NSObject {
         self.ambiances.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
         self.audibles.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
         self.running = true
+    }
+    func playerMovement(speed: CGFloat, rotation: CGFloat) {
+        self.player.direction += rotation / 10.0
+        if self.player.direction > CGFloat.pi {
+            self.player.direction -= CGFloat.pi
+        }
+        if self.player.direction < -CGFloat.pi {
+            self.player.direction += CGFloat.pi
+        }
+        let dx: CGFloat = cos(self.player.direction)*speed
+        let dy: CGFloat = sin(self.player.direction)*speed
+        self.player.pos.x += dx
+        self.player.pos.x += dy
+
+        self.run()
+        print("Speed: \(speed), Rotation: \(self.player.direction)")
     }
 }

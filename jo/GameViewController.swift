@@ -27,6 +27,7 @@ class GameViewController: UIViewController {
                 
                 // Present the scene
                 view.presentScene(scene)
+                (scene as! GameScene).controlDelegate = self
             }
             
             view.ignoresSiblingOrder = true
@@ -51,5 +52,17 @@ class GameViewController: UIViewController {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+}
+
+extension GameViewController: ControlDelegate {
+    func movement(speed: CGFloat, rotation: CGFloat) {
+        guard let level = self.level else {
+            return
+        }
+        level.playerMovement(speed: speed, rotation: rotation)
+    }
+    func action() {
+        print("Action!")
     }
 }
