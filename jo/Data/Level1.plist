@@ -5,13 +5,25 @@
 	<key>scripts</key>
 	<dict>
 		<key>empty</key>
-		<string>&quot;&quot;</string>
+		<string>function (object, timeDelta) { }</string>
+		<key>rolling20</key>
+		<string>function (object, timeDelta) {
+            object.angle += 0.01;
+            if (object.angle > Math.PI*2.0) {
+                object.angle -= Math.PI*2.0
+            }
+            object.pos.x = 20.0*cos(object.angle)
+            object.pos.y = 20.0*sin(object.angle)
+            return {"changed": ["self"]}
+        }</string>
 	</dict>
 	<key>audibles</key>
 	<array>
 		<dict>
 			<key>pos</key>
 			<string>10;1</string>
+			<key>id</key>
+			<string>thingie</string>
 			<key>url</key>
 			<string>ambtest</string>
 			<key>script</key>

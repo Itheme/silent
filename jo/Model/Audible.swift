@@ -10,9 +10,15 @@ import UIKit
 
 // point sound source
 public class Audible: AbstractAudible {
-    override init(details: [String:AnyObject]) {
+    let id: String
+    var scriptName: String
+    var scriptRepresentation: AnyObject? = nil
+    init(details: [String:AnyObject], scriptingEngine: Scripting) {
+        self.id = details["id"] as! String
+        self.scriptName = details["script"] as! String
         super.init(details: details)
-    
+        self.scriptRepresentation = scriptingEngine.representation(for: self.id, object: self)
+
         // TEMPORARY:
         self.audioPlayer.numberOfLoops = -1
     }
@@ -20,12 +26,15 @@ public class Audible: AbstractAudible {
 
 extension Audible: StateCollector {
     func collectState() -> [String : AnyObject]? {
-        let dict = ["pos": self.pos.string()]
+        let dict = ["pos": self.pos.string(), "script": self.scriptName]
         return dict as [String : AnyObject]
     }
     func applyState(state: [String : AnyObject]) {
         if let p = CGPoint(string: state["pos"] as? String) {
             self.pos = p
+        }
+        if let s = state["script"] as? String {
+            self.scriptName = s
         }
     }
 }

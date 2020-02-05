@@ -45,36 +45,78 @@ extension CGPoint {
     }
 }
 
+class ScriptRepresentation: NSObject {
+    let object: StateCollector
+    let lastState: [String: AnyObject]
+    let activeScript: String?
+    init(id: String, stateCollector: StateCollector) {
+        self.object = stateCollector
+        self.lastState = stateCollector.collectState()!
+        self.activeScript = lastState["script"] as? String
+    }
+}
+
+class Scripting: NSObject {
+    let machine = JSVirtualMachine()!
+    let context: JSContext
+    var collection: [String: ScriptRepresentation] = [:]
+    private var loop: Int = 0
+    init(details: [String:AnyObject]) {
+        self.context = JSContext(virtualMachine: self.machine)
+        self.context.evaluateScript("var console = {};")
+        super.init()
+        if let scripts = details["scripts"] as? [String: String] {
+            scripts.forEach { [unowned self] (key: String, value: String) in
+                self.context.evaluateScript("var \(key) = \(value);")
+            }
+        }
+        let logClosure: @convention (block) (String, String, String, String) -> Void = { fmt, a, b, c in
+            print(fmt, (a == "undefined") ?"":a, (b == "undefined") ?"":b, (c == "undefined") ?"":c)
+        }
+        self.context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
+    }
+    func representation(for id: String, object: StateCollector) -> JSValue {
+        let representation = ScriptRepresentation(id: id, stateCollector: object)
+        self.collection[id] = representation
+        let serialized = try! JSONSerialization.data(withJSONObject: representation.lastState, options: [])
+        if let scriptBody = String(data: serialized, encoding: .utf8) {
+            self.context.evaluateScript("var \(id) = \(scriptBody);")
+        }
+        return self.context.objectForKeyedSubscript(id)
+    }
+    func updateRepresentation(for id: String, object: StateCollector) -> JSValue {
+        let state = object.collectState()!
+        let serialized = try! JSONSerialization.data(withJSONObject: state, options: [])
+        if let script = String(data: serialized, encoding: .utf8) {
+            self.context.evaluateScript("\(id) = \(script);")
+        }
+        return self.context.objectForKeyedSubscript(id)
+    }
+    
+    func update(callback: (_ id: String) -> Void) {
+        self.loop += 1
+        if (self.loop % 10) == 0 {
+            self.collection.forEach { (id: String, representation: ScriptRepresentation) in
+                self.context.evaluateScript("\(representation)(\(id), \(self.loop))")
+            }
+        }
+    }
+}
+
 public class Level: NSObject {
     private var details: [String:AnyObject]
     var player: Player
-    var ambiances: [Ambiance]
-    var audibles: [Audible]
+    var ambiances: [Ambiance] = []
+    var audibles: [Audible] = []
     var running: Bool = false
-    let machine = JSVirtualMachine()!
-    let context: JSContext
-    let contextObjectPlayer: JSValue
     let engine: AVAudioEngine = AVAudioEngine()
+    let scripting: Scripting
     init(details: [String:AnyObject]) {
         self.details = details
-        self.context = JSContext(virtualMachine: self.machine)
-        self.context.evaluateScript("var console = {}; var player = {'pos': {}};")
-        self.contextObjectPlayer = self.context.objectForKeyedSubscript("player")
-        let logClosure: @convention (block) (String, String, String, String) -> Void = { fmt, a, b, c in
-            print(fmt, a, b, c)
-        }
-        self.context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
-
-        //self.context.evaluateScript("console.log('stuff')")
-        self.context.setObject(22, forKeyedSubscript: "number" as NSString)
-        self.context.evaluateScript("console.log('hi from js')")
-        self.context.evaluateScript("number = number + 20")
-        print("\(self.context.objectForKeyedSubscript("number"))")
+        self.scripting = Scripting(details: details)
         let playerDetails = (details["player"] as? [String:AnyObject]) ?? [:]
-        self.player = Player(initialPoint: (playerDetails["pos"] as? CGPoint) ?? CGPoint(x: 0, y: 0), initialDirection: (playerDetails["direction"] as? CGFloat) ?? 0, scriptRepresentation: self.contextObjectPlayer)
-        self.player.updateJSContext()
-        //self.context.evaluateScript("player.pos.x = 100")
-        print("\(self.contextObjectPlayer.objectForKeyedSubscript("pos.x")!)")
+        self.player = Player(initialPoint: (playerDetails["pos"] as? CGPoint) ?? CGPoint(x: 0, y: 0), initialDirection: (playerDetails["direction"] as? CGFloat) ?? 0, scriptingEngine: self.scripting)
+        super.init()
         if let ambianceDetails = details["ambiances"] as? [[String:AnyObject]] {
             self.ambiances = ambianceDetails.map {
                 Ambiance(details: $0)
@@ -83,8 +125,8 @@ public class Level: NSObject {
             self.ambiances = []
         }
         if let audibleDetails = details["audibles"] as? [[String:AnyObject]] {
-            self.audibles = audibleDetails.map {
-                Audible(details: $0)
+            self.audibles = audibleDetails.map { [unowned self] in
+                return Audible(details: $0, scriptingEngine: self.scripting)
             }
         } else {
             self.audibles = []
@@ -94,6 +136,10 @@ public class Level: NSObject {
         self.ambiances.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
         self.audibles.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
         self.running = true
+        
+        self.scripting.update { (id: String) in
+            //
+        }
     }
     func playerMovement(speed: CGFloat, rotation: CGFloat) {
         self.player.set(speed: speed, direction: self.player.direction + (rotation / 10.0))
@@ -107,6 +153,7 @@ public class Level: NSObject {
         let dy: CGFloat = sin(self.player.direction)*speed
         self.player.pos.x += dx
         self.player.pos.x += dy
+        self.player.updateScriptingContext(engine: self.scripting)
 
         self.run()
         //print("Speed: \(speed), Rotation: \(self.player.direction)")

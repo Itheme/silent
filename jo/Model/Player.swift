@@ -8,22 +8,20 @@
 
 import UIKit
 import AVKit
-import JavaScriptCore
 
 public class Player: NSObject {
-    var pos: CGPoint
-    var direction: CGFloat // angle in radians
+    var pos: CGPoint = CGPoint.zero
+    var direction: CGFloat = 0 // angle in radians
     var speed: CGFloat = 0
-    var scriptRepresentation: JSValue
-    var posScriptRepresentation: JSValue
+    var scriptRepresentation: AnyObject? = nil
     var audioPlayer: AVAudioPlayer
-    init(initialPoint: CGPoint, initialDirection: CGFloat, scriptRepresentation: JSValue) {
-        self.pos = initialPoint
-        self.direction = initialDirection
-        self.scriptRepresentation = scriptRepresentation
-        self.posScriptRepresentation = self.scriptRepresentation.objectForKeyedSubscript("pos")
+    init(initialPoint: CGPoint, initialDirection: CGFloat, scriptingEngine: Scripting) {
         let url = Bundle.main.url(forResource: "steps01", withExtension: "mp3")!
         self.audioPlayer = try! AVAudioPlayer(contentsOf: url)
+        super.init()
+        self.pos = initialPoint
+        self.direction = initialDirection
+        self.scriptRepresentation = scriptingEngine.representation(for: "player", object: self)
         self.audioPlayer.prepareToPlay()
         self.audioPlayer.numberOfLoops = -1
     }
@@ -41,10 +39,20 @@ public class Player: NSObject {
         }
 
     }
-    func updateJSContext() {
-        self.posScriptRepresentation.setValue(pos.x, forProperty: "x")
-        self.posScriptRepresentation.setValue(pos.y, forProperty: "y")
-        self.scriptRepresentation.setValue(direction, forProperty: "direction")
+    func updateScriptingContext(engine: Scripting) {
+        self.scriptRepresentation = engine.updateRepresentation(for: "player", object: self)
     }
 
+}
+
+extension Player: StateCollector {
+    func collectState() -> [String : AnyObject]? {
+        let dict: [String : Any] = ["pos": self.pos.string(), "direction": self.direction, "speed": self.speed]
+        return dict as [String : AnyObject]
+    }
+    func applyState(state: [String : AnyObject]) {
+        if let p = CGPoint(string: state["pos"] as? String) {
+            self.pos = p
+        }
+    }
 }
