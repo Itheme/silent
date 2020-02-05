@@ -29,6 +29,7 @@
 		3826DD7123E9F36B00045BAA /* Audible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD7023E9F36B00045BAA /* Audible.swift */; };
 		386B159223EAF8A600DA7666 /* ScriptingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B159123EAF8A600DA7666 /* ScriptingTest.swift */; };
 		386B159423EAF8C200DA7666 /* LevelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B159323EAF8C200DA7666 /* LevelTest.swift */; };
+		386B159623EB0F2400DA7666 /* Scripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B159523EB0F2400DA7666 /* Scripting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		3826DD7023E9F36B00045BAA /* Audible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audible.swift; sourceTree = "<group>"; };
 		386B159123EAF8A600DA7666 /* ScriptingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptingTest.swift; sourceTree = "<group>"; };
 		386B159323EAF8C200DA7666 /* LevelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelTest.swift; sourceTree = "<group>"; };
+		386B159523EB0F2400DA7666 /* Scripting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scripting.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +172,7 @@
 				3826DD5A23E97B6200045BAA /* Level.swift */,
 				3826DD6E23E9EE4C00045BAA /* Ambiance.swift */,
 				3826DD6623E9971300045BAA /* Player.swift */,
+				386B159523EB0F2400DA7666 /* Scripting.swift */,
 				3826DD7023E9F36B00045BAA /* Audible.swift */,
 				3826DD6823E997CB00045BAA /* AbstractAudible.swift */,
 			);
@@ -335,6 +338,7 @@
 				3826DD2723E9790800045BAA /* GameScene.swift in Sources */,
 				3826DD2923E9790800045BAA /* GameViewController.swift in Sources */,
 				3826DD5B23E97B6200045BAA /* Level.swift in Sources */,
+				386B159623EB0F2400DA7666 /* Scripting.swift in Sources */,
 				3826DD6723E9971300045BAA /* Player.swift in Sources */,
 				3826DD6F23E9EE4C00045BAA /* Ambiance.swift in Sources */,
 				3826DD7123E9F36B00045BAA /* Audible.swift in Sources */,
