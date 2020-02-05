@@ -8,26 +8,37 @@
 		<string>function (object, timeDelta) { }</string>
 		<key>rolling20</key>
 		<string>function (object, timeDelta) {
-            object.angle += 0.01;
+            if (object.angle !== undefined) {
+                object.angle += 0.1;
+            } else {
+                object.angle = 0;
+            }
+            console.log(JSON.stringify(object))
             if (object.angle > Math.PI*2.0) {
                 object.angle -= Math.PI*2.0
             }
-            object.pos.x = 20.0*cos(object.angle)
-            object.pos.y = 20.0*sin(object.angle)
-            return {"changed": ["self"]}
+            object.pos.x = 20.0*Math.cos(object.angle)
+            object.pos.y = 20.0*Math.sin(object.angle)
+            return object
+            //{"changed": ["self"]}
         }</string>
 	</dict>
 	<key>audibles</key>
 	<array>
 		<dict>
 			<key>pos</key>
-			<string>10;1</string>
+			<dict>
+                <key>x</key>
+                <integer>10</integer>
+                <key>y</key>
+                <integer>1</integer>
+            </dict>
 			<key>id</key>
 			<string>thingie</string>
 			<key>url</key>
 			<string>ambtest</string>
 			<key>script</key>
-			<string>empty</string>
+			<string>rolling20</string>
 		</dict>
 	</array>
 	<key>ambiances</key>

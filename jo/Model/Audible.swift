@@ -25,13 +25,17 @@ public class Audible: AbstractAudible {
 }
 
 extension Audible: StateCollector {
-    func collectState() -> [String : AnyObject]? {
-        let dict = ["pos": self.pos.string(), "script": self.scriptName]
+    public func collectState() -> [String : AnyObject]? {
+        let dict: [String : AnyObject] = ["pos": ["x": self.pos.x, "y": self.pos.y] as AnyObject, "script": self.scriptName as AnyObject]
         return dict as [String : AnyObject]
     }
-    func applyState(state: [String : AnyObject]) {
-        if let p = CGPoint(string: state["pos"] as? String) {
-            self.pos = p
+    public func applyState(state: [String : AnyObject]) {
+        if let posString = state["pos"] as? String {
+            self.pos = CGPoint(string: posString)!
+        } else {
+            if let posDict = state["pos"] as? [String:CGFloat] {
+                self.pos = CGPoint(x: posDict["x"]!, y: posDict["y"]!)
+            }
         }
         if let s = state["script"] as? String {
             self.scriptName = s

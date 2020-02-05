@@ -27,6 +27,8 @@
 		3826DD6D23E9D7F200045BAA /* steps01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3826DD6C23E9D7F100045BAA /* steps01.mp3 */; };
 		3826DD6F23E9EE4C00045BAA /* Ambiance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD6E23E9EE4C00045BAA /* Ambiance.swift */; };
 		3826DD7123E9F36B00045BAA /* Audible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD7023E9F36B00045BAA /* Audible.swift */; };
+		386B159223EAF8A600DA7666 /* ScriptingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B159123EAF8A600DA7666 /* ScriptingTest.swift */; };
+		386B159423EAF8C200DA7666 /* LevelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B159323EAF8C200DA7666 /* LevelTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,8 @@
 		3826DD6C23E9D7F100045BAA /* steps01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = steps01.mp3; sourceTree = "<group>"; };
 		3826DD6E23E9EE4C00045BAA /* Ambiance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ambiance.swift; sourceTree = "<group>"; };
 		3826DD7023E9F36B00045BAA /* Audible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audible.swift; sourceTree = "<group>"; };
+		386B159123EAF8A600DA7666 /* ScriptingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptingTest.swift; sourceTree = "<group>"; };
+		386B159323EAF8C200DA7666 /* LevelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +146,8 @@
 		3826DD3A23E9790C00045BAA /* joTests */ = {
 			isa = PBXGroup;
 			children = (
+				386B159323EAF8C200DA7666 /* LevelTest.swift */,
+				386B159123EAF8A600DA7666 /* ScriptingTest.swift */,
 				3826DD6423E9948500045BAA /* LevelsConsistency.swift */,
 				3826DD3B23E9790C00045BAA /* joTests.swift */,
 				3826DD3D23E9790C00045BAA /* Info.plist */,
@@ -342,6 +348,8 @@
 			files = (
 				3826DD3C23E9790C00045BAA /* joTests.swift in Sources */,
 				3826DD6523E9948500045BAA /* LevelsConsistency.swift in Sources */,
+				386B159423EAF8C200DA7666 /* LevelTest.swift in Sources */,
+				386B159223EAF8A600DA7666 /* ScriptingTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

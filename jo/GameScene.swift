@@ -145,10 +145,13 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        guard let control = self.controlDelegate else {
+            return
+        }
         if let tracker = self.movementTracker {
-            if let control = self.controlDelegate {
-                control.movement(speed: tracker.speed, rotation: 0)
-            }
+            control.movement(speed: tracker.speed, rotation: 0)
+        } else {
+            control.movement(speed: 0, rotation: 0)
         }
     }
 }

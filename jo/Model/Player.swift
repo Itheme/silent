@@ -26,8 +26,16 @@ public class Player: NSObject {
         self.audioPlayer.numberOfLoops = -1
     }
     func set(speed: CGFloat, direction: CGFloat) {
-        self.direction = direction
         self.speed = speed
+        if direction > CGFloat.pi {
+            self.direction = direction - CGFloat.pi * 2.0
+        } else {
+            if direction < -CGFloat.pi {
+                self.direction = direction + CGFloat.pi * 2.0
+            } else {
+                self.direction = direction
+            }
+        }
         if abs(speed) > 0.0 {
             if !self.audioPlayer.isPlaying {
                 self.audioPlayer.play()
@@ -46,11 +54,11 @@ public class Player: NSObject {
 }
 
 extension Player: StateCollector {
-    func collectState() -> [String : AnyObject]? {
+    public func collectState() -> [String : AnyObject]? {
         let dict: [String : Any] = ["pos": self.pos.string(), "direction": self.direction, "speed": self.speed]
         return dict as [String : AnyObject]
     }
-    func applyState(state: [String : AnyObject]) {
+    public func applyState(state: [String : AnyObject]) {
         if let p = CGPoint(string: state["pos"] as? String) {
             self.pos = p
         }

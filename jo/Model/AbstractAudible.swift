@@ -15,7 +15,12 @@ open class AbstractAudible: NSObject {
     init(details: [String: AnyObject]) {
         let urlString = details["url"] as! String
         let url = Bundle.main.url(forResource: urlString, withExtension: "mp3")!
-        self.pos = CGPoint(string: details["pos"] as? String)!
+        if let posString = details["pos"] as? String {
+            self.pos = CGPoint(string: posString)!
+        } else {
+            let posDict = details["pos"] as! [String:CGFloat]
+            self.pos = CGPoint(x: posDict["x"]!, y: posDict["y"]!)
+        }
         self.audioPlayer = try! AVAudioPlayer(contentsOf: url)
     }
 }

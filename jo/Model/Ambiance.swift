@@ -27,10 +27,10 @@ public class Ambiance: AbstractAudible {
 }
 
 extension Ambiance: StateCollector {
-    func collectState() -> [String : AnyObject]? {
+    public func collectState() -> [String : AnyObject]? {
         return nil
     }
-    func applyState(state: [String : AnyObject]) {
+    public func applyState(state: [String : AnyObject]) {
     }
 }
 

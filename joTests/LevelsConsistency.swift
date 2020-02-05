@@ -49,6 +49,9 @@ extension AbstractAudible {
                     if let _ = details["pos"] as? String {
                         return true
                     }
+                    if let _ = details["pos"] as? [String:CGFloat] {
+                        return true
+                    }
                     XCTFail("Pos not present")
                 }
                 XCTFail("Unable to load track \(urlString)")

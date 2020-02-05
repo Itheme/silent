@@ -10,7 +10,7 @@ import UIKit
 import JavaScriptCore
 import AVFoundation
 
-protocol StateCollector {
+public protocol StateCollector {
     func collectState() -> [String:AnyObject]?
     func applyState(state: [String:AnyObject]) -> Void
 }
@@ -47,7 +47,7 @@ extension CGPoint {
 
 class ScriptRepresentation: NSObject {
     let object: StateCollector
-    let lastState: [String: AnyObject]
+    var lastState: [String: AnyObject]
     let activeScript: String?
     init(id: String, stateCollector: StateCollector) {
         self.object = stateCollector
@@ -56,12 +56,12 @@ class ScriptRepresentation: NSObject {
     }
 }
 
-class Scripting: NSObject {
+open class Scripting: NSObject {
     let machine = JSVirtualMachine()!
     let context: JSContext
     var collection: [String: ScriptRepresentation] = [:]
     private var loop: Int = 0
-    init(details: [String:AnyObject]) {
+    public init(details: [String:AnyObject]) {
         self.context = JSContext(virtualMachine: self.machine)
         self.context.evaluateScript("var console = {};")
         super.init()
@@ -75,7 +75,7 @@ class Scripting: NSObject {
         }
         self.context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
     }
-    func representation(for id: String, object: StateCollector) -> JSValue {
+    open func representation(for id: String, object: StateCollector) -> JSValue {
         let representation = ScriptRepresentation(id: id, stateCollector: object)
         self.collection[id] = representation
         let serialized = try! JSONSerialization.data(withJSONObject: representation.lastState, options: [])
@@ -84,7 +84,7 @@ class Scripting: NSObject {
         }
         return self.context.objectForKeyedSubscript(id)
     }
-    func updateRepresentation(for id: String, object: StateCollector) -> JSValue {
+    open func updateRepresentation(for id: String, object: StateCollector) -> JSValue {
         let state = object.collectState()!
         let serialized = try! JSONSerialization.data(withJSONObject: state, options: [])
         if let script = String(data: serialized, encoding: .utf8) {
@@ -92,12 +92,23 @@ class Scripting: NSObject {
         }
         return self.context.objectForKeyedSubscript(id)
     }
-    
-    func update(callback: (_ id: String) -> Void) {
+    open func evaluate(script: String, objectName: String) -> [String: AnyObject]? {
+        if let dict = self.context.evaluateScript("\(script)(\(objectName), \(self.loop))") {
+            return dict.toDictionary() as? [String : AnyObject]
+        }
+        return nil
+    }
+    func update(callback: (_ id: String, _ representation: ScriptRepresentation) -> Void) {
         self.loop += 1
         if (self.loop % 10) == 0 {
             self.collection.forEach { (id: String, representation: ScriptRepresentation) in
-                self.context.evaluateScript("\(representation)(\(id), \(self.loop))")
+                if let script = representation.activeScript {
+                    if let dict = self.evaluate(script: script, objectName: id) { //self.context.evaluateScript("\(representation)(\(id), \(self.loop))")?.toDictionary() as? [String : AnyObject] {
+                        representation.lastState = dict
+                        representation.object.applyState(state: representation.lastState)
+                        callback(id, representation)
+                    }
+                }
             }
         }
     }
@@ -137,18 +148,14 @@ public class Level: NSObject {
         self.audibles.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
         self.running = true
         
-        self.scripting.update { (id: String) in
-            //
+        self.scripting.update { (id: String, representation: ScriptRepresentation) in
+            if let p = representation.object as? Perspective {
+                p.applyPlayerPerspective(player: self.player, run: false)
+            }
         }
     }
     func playerMovement(speed: CGFloat, rotation: CGFloat) {
         self.player.set(speed: speed, direction: self.player.direction + (rotation / 10.0))
-        if self.player.direction > CGFloat.pi {
-            self.player.direction -= CGFloat.pi * 2.0
-        }
-        if self.player.direction < -CGFloat.pi {
-            self.player.direction += CGFloat.pi * 2.0
-        }
         let dx: CGFloat = cos(self.player.direction)*speed
         let dy: CGFloat = sin(self.player.direction)*speed
         self.player.pos.x += dx
