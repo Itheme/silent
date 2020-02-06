@@ -38,6 +38,54 @@
                 <real>1</real>
             </dict>
 		</dict>
+        <dict>
+            <key>pos</key>
+            <dict>
+                <key>x</key>
+                <integer>10</integer>
+                <key>y</key>
+                <integer>1</integer>
+            </dict>
+            <key>id</key>
+            <string>thingie2</string>
+            <key>url</key>
+            <string>ambtest</string>
+            <key>script</key>
+            <string>rolling</string>
+            <key>params</key>
+            <dict>
+                <key>angle</key>
+                <real>0</real>
+                <key>speed</key>
+                <real>0.01</real>
+                <key>radius</key>
+                <real>10</real>
+                <key>originX</key>
+                <real>10</real>
+                <key>originY</key>
+                <real>10</real>
+            </dict>
+        </dict>
+        <dict>
+            <key>pos</key>
+            <dict>
+                <key>x</key>
+                <integer>5</integer>
+                <key>y</key>
+                <integer>5</integer>
+            </dict>
+            <key>id</key>
+            <string>thingie3</string>
+            <key>url</key>
+            <string>ambtest</string>
+            <key>script</key>
+            <string>follower</string>
+            <key>params</key>
+            <dict>
+                <key>k</key>
+                <real>0.4</real>
+            </dict>
+        </dict>
 	</array>
 	<key>ambiances</key>
 	<array>

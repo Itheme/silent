@@ -57,7 +57,7 @@ class ScriptingTest: XCTestCase {
     func testScriptsLoadingAndRunning() {
         let dict = ["scripts": ["behaviourScript"]] as [String: AnyObject]
         let engine = ScriptingMockup(details: dict)
-        let representation = engine.representation(for: "entity", params: ["p": "value" as AnyObject], object: self.entity)
+        let representation = engine.createRepresentation(for: "entity", params: ["p": "value" as AnyObject], object: self.entity)
         let representationDict = representation.toDictionary()
         XCTAssertNotNil(representationDict, "Game object representation created by scripting engine")
         XCTAssert(representationDict!["state"] as? String == "value", "Game object must have state values")
@@ -71,7 +71,7 @@ class ScriptingTest: XCTestCase {
     func testRepresentaion() {
         let engine = ScriptingMockup(details: [:])
         engine.contextEvaluationResultOverride = [:]
-        XCTAssertNotNil(engine.representation(for: "entity", params: ["param": "paramValue" as AnyObject], object: self.entity))
+        XCTAssertNotNil(engine.createRepresentation(for: "entity", params: ["param": "paramValue" as AnyObject], object: self.entity))
         XCTAssertNotNil(engine.lastContextEvalScript)
         XCTAssert(engine.lastContextEvalScript! == "var entity = {\"state\":\"value\"}; var entityParams = {\"param\":\"paramValue\"};")
         self.entity.state["state"] = "value2" as AnyObject
@@ -94,7 +94,7 @@ class ScriptingTest: XCTestCase {
         let engine = ScriptingMockup(details: dict)
         engine.evaluationResultOverride = ["eval": "override"] as [String: AnyObject]
         self.entity.state["script"] = "behaviourScript" as AnyObject
-        XCTAssertNotNil(engine.representation(for: "entity", params: ["param": "paramValue" as AnyObject], object: self.entity))
+        XCTAssertNotNil(engine.createRepresentation(for: "entity", params: ["param": "paramValue" as AnyObject], object: self.entity))
         var callbackRepresentation: ScriptRepresentation? = nil
         for _ in 0...100 {
             engine.update { (id: String, representation: ScriptRepresentation) in

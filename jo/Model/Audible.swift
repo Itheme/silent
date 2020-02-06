@@ -12,19 +12,17 @@ import UIKit
 public class Audible: AbstractAudible {
     let id: String
     var scriptName: String
-    var scriptRepresentation: AnyObject? = nil
     init(details: [String:AnyObject], scriptingEngine: Scripting) {
         self.id = details["id"] as! String
         self.scriptName = details["script"] as! String
         super.init(details: details)
-        self.scriptRepresentation = scriptingEngine.representation(for: self.id, params: details["params"] as? [String : AnyObject], object: self)
+        scriptingEngine.createRepresentation(for: self.id, params: details["params"] as? [String : AnyObject], object: self)
 
         // TEMPORARY:
         self.audioPlayer.numberOfLoops = -1
     }
     func kill() {
         self.audioPlayer.stop()
-        self.scriptRepresentation = nil
     }
 }
 

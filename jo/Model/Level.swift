@@ -75,25 +75,22 @@ public class Level: NSObject {
         } else {
             self.audibles = []
         }
+        self.scripting.delegate = self
     }
     func run() {
         self.ambiances.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
         self.audibles.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
         self.running = true
         
-        self.scripting.update { (id: String, representation: ScriptRepresentation) in
-            if let p = representation.object as? Perspective {
-                p.applyPlayerPerspective(player: self.player, run: false)
-            }
-            print("\(player.pos) \(representation.lastState["pos"])")
-        }
+        self.scripting.update()// { (id: String, representation: ScriptRepresentation) in
+        
     }
     func playerMovement(speed: CGFloat, rotation: CGFloat) {
         self.player.set(speed: speed, direction: self.player.direction + (rotation / 10.0))
         let dx: CGFloat = cos(self.player.direction)*speed
         let dy: CGFloat = sin(self.player.direction)*speed
         self.player.pos.x += dx
-        self.player.pos.x += dy
+        self.player.pos.y += dy
         self.player.updateScriptingContext(engine: self.scripting)
 
         self.run()
@@ -108,5 +105,14 @@ public class Level: NSObject {
             self.audibles.remove(at: index)
             self.actionAudioPlayer.play()
         }
+    }
+}
+
+extension Level: ScriptingCallbackDelegate {
+    func callback(representation: ScriptRepresentation) {
+        if let p = representation.object as? Perspective {
+            p.applyPlayerPerspective(player: self.player, run: false)
+        }
+        print("\(self.player.pos) \(self.player.direction) \(representation.lastState["pos"]!)")
     }
 }

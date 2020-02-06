@@ -13,7 +13,6 @@ public class Player: NSObject {
     var pos: CGPoint = CGPoint.zero
     var direction: CGFloat = 0 // angle in radians
     var speed: CGFloat = 0
-    var scriptRepresentation: AnyObject? = nil
     var audioPlayer: AVAudioPlayer
     init(initialPoint: CGPoint, initialDirection: CGFloat, scriptingEngine: Scripting) {
         let url = Bundle.main.url(forResource: "steps01", withExtension: "mp3")!
@@ -21,19 +20,20 @@ public class Player: NSObject {
         super.init()
         self.pos = initialPoint
         self.direction = initialDirection
-        self.scriptRepresentation = scriptingEngine.representation(for: "player", params: nil, object: self)
+        scriptingEngine.createRepresentation(for: "player", params: nil, object: self)
         self.audioPlayer.prepareToPlay()
         self.audioPlayer.numberOfLoops = -1
     }
     func set(speed: CGFloat, direction: CGFloat) {
         self.speed = speed
-        if direction > CGFloat.pi {
-            self.direction = direction - CGFloat.pi * 2.0
+        let d = direction
+        if d > CGFloat.pi {
+            self.direction = d - CGFloat.pi * 2.0
         } else {
-            if direction < -CGFloat.pi {
-                self.direction = direction + CGFloat.pi * 2.0
+            if d < -CGFloat.pi {
+                self.direction = d + CGFloat.pi * 2.0
             } else {
-                self.direction = direction
+                self.direction = d
             }
         }
         if abs(speed) > 0.0 {
@@ -48,7 +48,7 @@ public class Player: NSObject {
 
     }
     func updateScriptingContext(engine: Scripting) {
-        self.scriptRepresentation = engine.updateRepresentation(for: "player", object: self)
+        engine.updateRepresentation(for: "player", object: self)
     }
 
 }
