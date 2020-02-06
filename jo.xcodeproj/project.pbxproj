@@ -255,6 +255,7 @@
 				3826DD3323E9790C00045BAA /* Sources */,
 				3826DD3423E9790C00045BAA /* Frameworks */,
 				3826DD3523E9790C00045BAA /* Resources */,
+				383B515D23EC71FD005E7C94 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -364,6 +365,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		383B515D23EC71FD005E7C94 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "pushd ${PROJECT_DIR}/joTests/Scripts\nmocha\npopd\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3826DD1923E9790800045BAA /* Sources */ = {
