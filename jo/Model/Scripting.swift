@@ -28,16 +28,24 @@ open class Scripting: NSObject {
     public init(details: [String:AnyObject]) {
         self.context = JSContext(virtualMachine: self.machine)
         super.init()
-        let _ = self.contextEvaluate(code: "var console = {};")
-        if let scripts = details["scripts"] as? [String: String] {
-            scripts.forEach { [unowned self] (key: String, value: String) in
-                let _ = self.contextEvaluate(code: "var \(key) = \(value);")
-            }
+        let _ = self.contextEvaluate(code: "var module = {}; var console = {};")
+        if let scripts = details["scripts"] as? [String] {
+            self.loadScripts(scripts)
         }
         let logClosure: @convention (block) (String, String, String, String) -> Void = { fmt, a, b, c in
             print(fmt, (a == "undefined") ?"":a, (b == "undefined") ?"":b, (c == "undefined") ?"":c)
         }
         self.context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
+    }
+    func loadScripts(_ scripts: [String]) {
+        for scriptName in scripts {
+            for bundle in Bundle.allBundles {
+                if let url = bundle.url(forResource: scriptName, withExtension: "js") {
+                    let _ = self.contextEvaluate(code: try! String(contentsOf: url))
+                    break
+                }
+            }
+        }
     }
     open func representation(for id: String, params: [String: AnyObject]?, object: StateCollector) -> JSValue {
         let representation = ScriptRepresentation(id: id, stateCollector: object)

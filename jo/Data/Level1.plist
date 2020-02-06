@@ -3,25 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>scripts</key>
-	<dict>
-		<key>empty</key>
-		<string>function (object, params, timeDelta) { return {} }</string>
-		<key>rolling</key>
-		<string>function (object, params, timeDelta) {
-            if (object.angle !== undefined) {
-                object.angle += 0.1;
-            } else {
-                object.angle = params.angle;
-            }
-            //console.log(JSON.stringify(object))
-            if (object.angle > Math.PI*2.0) {
-                object.angle -= Math.PI*2.0
-            }
-            object.pos.x = params.radius*Math.cos(object.angle)+params.originX
-            object.pos.y = params.radius*Math.sin(object.angle)+params.originY
-            return object
-        }</string>
-	</dict>
+	<array>
+		<string>empty</string>
+		<string>rolling</string>
+	</array>
 	<key>audibles</key>
 	<array>
 		<dict>
@@ -41,13 +26,15 @@
             <key>params</key>
             <dict>
                 <key>angle</key>
-                <integer>0</integer>
+                <real>0</real>
+                <key>speed</key>
+                <real>0.01</real>
                 <key>radius</key>
-                <integer>20</integer>
+                <real>20</real>
                 <key>originX</key>
-                <integer>1</integer>
+                <real>1</real>
                 <key>originY</key>
-                <integer>1</integer>
+                <real>1</real>
             </dict>
 		</dict>
 	</array>
@@ -61,9 +48,9 @@
 			<key>inversion</key>
 			<dict>
 				<key>r0</key>
-				<integer>30</integer>
+				<real>30</real>
 				<key>r1</key>
-				<integer>100</integer>
+				<real>100</real>
 			</dict>
 		</dict>
 	</array>

@@ -53,10 +53,9 @@ class ScriptingTest: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-    
 
     func testScriptsLoadingAndRunning() {
-        let dict = ["scripts": ["behaviourScript": "function(object, params, time) { return {'object': object, 'params': params, 'time': time }; }"]] as [String: AnyObject]
+        let dict = ["scripts": ["behaviourScript"]] as [String: AnyObject]
         let engine = ScriptingMockup(details: dict)
         let representation = engine.representation(for: "entity", params: ["p": "value" as AnyObject], object: self.entity)
         let representationDict = representation.toDictionary()
@@ -86,6 +85,8 @@ class ScriptingTest: XCTestCase {
         let representationDict = representation.toDictionary()
         XCTAssertNotNil(representationDict, "Game object representation returned by scripting engine")
         XCTAssert(representationDict!["state"] as? String == "value2", "Game object state must be updated")
+        
+        engine.removeRepresenation(for: "entity", object: self.entity)
     }
     
     func testUpdate() {
