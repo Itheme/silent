@@ -5,22 +5,21 @@
 	<key>scripts</key>
 	<dict>
 		<key>empty</key>
-		<string>function (object, timeDelta) { }</string>
-		<key>rolling20</key>
-		<string>function (object, timeDelta) {
+		<string>function (object, params, timeDelta) { return {} }</string>
+		<key>rolling</key>
+		<string>function (object, params, timeDelta) {
             if (object.angle !== undefined) {
                 object.angle += 0.1;
             } else {
-                object.angle = 0;
+                object.angle = params.angle;
             }
-            console.log(JSON.stringify(object))
+            //console.log(JSON.stringify(object))
             if (object.angle > Math.PI*2.0) {
                 object.angle -= Math.PI*2.0
             }
-            object.pos.x = 20.0*Math.cos(object.angle)
-            object.pos.y = 20.0*Math.sin(object.angle)
+            object.pos.x = params.radius*Math.cos(object.angle)+params.originX
+            object.pos.y = params.radius*Math.sin(object.angle)+params.originY
             return object
-            //{"changed": ["self"]}
         }</string>
 	</dict>
 	<key>audibles</key>
@@ -28,17 +27,28 @@
 		<dict>
 			<key>pos</key>
 			<dict>
-                <key>x</key>
-                <integer>10</integer>
-                <key>y</key>
-                <integer>1</integer>
-            </dict>
+				<key>x</key>
+				<integer>10</integer>
+				<key>y</key>
+				<integer>1</integer>
+			</dict>
 			<key>id</key>
 			<string>thingie</string>
 			<key>url</key>
 			<string>ambtest</string>
 			<key>script</key>
-			<string>rolling20</string>
+			<string>rolling</string>
+            <key>params</key>
+            <dict>
+                <key>angle</key>
+                <integer>0</integer>
+                <key>radius</key>
+                <integer>20</integer>
+                <key>originX</key>
+                <integer>1</integer>
+                <key>originY</key>
+                <integer>1</integer>
+            </dict>
 		</dict>
 	</array>
 	<key>ambiances</key>

@@ -17,10 +17,14 @@ public class Audible: AbstractAudible {
         self.id = details["id"] as! String
         self.scriptName = details["script"] as! String
         super.init(details: details)
-        self.scriptRepresentation = scriptingEngine.representation(for: self.id, object: self)
+        self.scriptRepresentation = scriptingEngine.representation(for: self.id, params: details["params"] as? [String : AnyObject], object: self)
 
         // TEMPORARY:
         self.audioPlayer.numberOfLoops = -1
+    }
+    func kill() {
+        self.audioPlayer.stop()
+        self.scriptRepresentation = nil
     }
 }
 

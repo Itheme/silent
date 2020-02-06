@@ -9,6 +9,8 @@
 import UIKit
 import AVFoundation
 
+let ActionProximity: CGFloat = 3.0
+
 public protocol StateCollector {
     func collectState() -> [String:AnyObject]?
     func applyState(state: [String:AnyObject]) -> Void
@@ -52,6 +54,7 @@ public class Level: NSObject {
     var running: Bool = false
     let engine: AVAudioEngine = AVAudioEngine()
     let scripting: Scripting
+    var actionAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "action02", withExtension: "mp3")!)
     init(details: [String:AnyObject]) {
         self.details = details
         self.scripting = Scripting(details: details)
@@ -82,6 +85,7 @@ public class Level: NSObject {
             if let p = representation.object as? Perspective {
                 p.applyPlayerPerspective(player: self.player, run: false)
             }
+            print("\(player.pos) \(representation.lastState["pos"])")
         }
     }
     func playerMovement(speed: CGFloat, rotation: CGFloat) {
@@ -94,5 +98,15 @@ public class Level: NSObject {
 
         self.run()
         //print("Speed: \(speed), Rotation: \(self.player.direction)")
+    }
+    func playerAction() {
+        if let index = self.audibles.firstIndex(where: { (object: Audible) -> Bool in
+            return (abs(object.pos.x - self.player.pos.x) < ActionProximity) && (abs(object.pos.y - self.player.pos.y) < ActionProximity)
+            }) {
+            self.scripting.removeRepresenation(for: self.audibles[index].id, object: self.audibles[index])
+            self.audibles[index].kill()
+            self.audibles.remove(at: index)
+            self.actionAudioPlayer.play()
+        }
     }
 }

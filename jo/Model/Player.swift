@@ -21,7 +21,7 @@ public class Player: NSObject {
         super.init()
         self.pos = initialPoint
         self.direction = initialDirection
-        self.scriptRepresentation = scriptingEngine.representation(for: "player", object: self)
+        self.scriptRepresentation = scriptingEngine.representation(for: "player", params: nil, object: self)
         self.audioPlayer.prepareToPlay()
         self.audioPlayer.numberOfLoops = -1
     }

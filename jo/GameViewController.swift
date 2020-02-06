@@ -9,10 +9,12 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import AVKit
 
 class GameViewController: UIViewController {
     private var level: Level?
-    
+    var actionAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "action01", withExtension: "mp3")!)
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let levelDetailsURL = Bundle.main.url(forResource: "Level1", withExtension: "plist")!
@@ -36,6 +38,10 @@ class GameViewController: UIViewController {
             view.showsNodeCount = true
             self.level!.run()
         }
+        let touchGesture = UITapGestureRecognizer(target: self, action: Selector("viewTouch:"))
+        touchGesture.numberOfTapsRequired = 1
+        touchGesture.numberOfTouchesRequired = 1
+        self.view.addGestureRecognizer(touchGesture)
     }
 
     override var shouldAutorotate: Bool {
@@ -53,6 +59,15 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    @objc func viewTouch(_ touch: UITapGestureRecognizer) -> Void {
+        if self.actionAudioPlayer.isPlaying {
+            // cancel
+        } else {
+            self.level!.playerAction()
+            self.actionAudioPlayer.play()
+        }
+    }
 }
 
 extension GameViewController: ControlDelegate {
@@ -63,6 +78,7 @@ extension GameViewController: ControlDelegate {
         level.playerMovement(speed: speed / 10.0, rotation: rotation*10)
     }
     func action() {
-        print("Action!")
-    }
+        self.level!.playerAction()
+        self.actionAudioPlayer.play()
+}
 }

@@ -39,13 +39,19 @@ open class Scripting: NSObject {
         }
         self.context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
     }
-    open func representation(for id: String, object: StateCollector) -> JSValue {
+    open func representation(for id: String, params: [String: AnyObject]?, object: StateCollector) -> JSValue {
         let representation = ScriptRepresentation(id: id, stateCollector: object)
         self.collection[id] = representation
-        let serialized = try! JSONSerialization.data(withJSONObject: representation.lastState, options: [])
-        if let scriptBody = String(data: serialized, encoding: .utf8) {
-            let _ = self.contextEvaluate(code: "var \(id) = \(scriptBody);")
+        let serializedState = try! JSONSerialization.data(withJSONObject: representation.lastState, options: [])
+        let scriptStateBody = String(data: serializedState, encoding: .utf8)!
+        var representationScript = "var \(id) = \(scriptStateBody);"
+        if let p = params {
+            let serializedParams = try! JSONSerialization.data(withJSONObject: p, options: [])
+            if let scriptParamsBody = String(data: serializedParams, encoding: .utf8) {
+                representationScript = "\(representationScript) var \(id)Params = \(scriptParamsBody);"
+            }
         }
+        let _ = self.contextEvaluate(code: representationScript)
         return self.context.objectForKeyedSubscript(id)
     }
     open func updateRepresentation(for id: String, object: StateCollector) -> JSValue {
@@ -56,11 +62,14 @@ open class Scripting: NSObject {
         }
         return self.context.objectForKeyedSubscript(id)
     }
+    open func removeRepresenation(for id: String, object: StateCollector) -> Void {
+        self.collection.removeValue(forKey: id)
+    }
     open func contextEvaluate(code: String) -> [AnyHashable : Any]? {
         return self.context.evaluateScript(code)?.toDictionary()
     }
     open func evaluate(script: String, objectName: String) -> [String: AnyObject]? {
-        if let dict = self.contextEvaluate(code: "\(script)(\(objectName), \(self.loop))") {
+        if let dict = self.contextEvaluate(code: "\(script)(\(objectName), \(objectName)Params, \(self.loop))") {
             return dict as? [String : AnyObject]
         }
         return nil
