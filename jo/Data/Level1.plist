@@ -6,6 +6,7 @@
 	<array>
 		<string>empty</string>
 		<string>rolling</string>
+        <string>follower</string>
 	</array>
 	<key>audibles</key>
 	<array>

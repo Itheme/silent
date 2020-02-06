@@ -32,6 +32,7 @@
 		383B515823EC694B005E7C94 /* empty.js in Resources */ = {isa = PBXBuildFile; fileRef = 383B515623EC694B005E7C94 /* empty.js */; };
 		383B515923EC694B005E7C94 /* rolling.js in Resources */ = {isa = PBXBuildFile; fileRef = 383B515723EC694B005E7C94 /* rolling.js */; };
 		383B515C23EC6A8E005E7C94 /* behaviourScript.js in Resources */ = {isa = PBXBuildFile; fileRef = 383B515B23EC6A8E005E7C94 /* behaviourScript.js */; };
+		383B515F23EC98D7005E7C94 /* follower.js in Resources */ = {isa = PBXBuildFile; fileRef = 383B515E23EC98D7005E7C94 /* follower.js */; };
 		386B159223EAF8A600DA7666 /* ScriptingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B159123EAF8A600DA7666 /* ScriptingTest.swift */; };
 		386B159423EAF8C200DA7666 /* LevelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B159323EAF8C200DA7666 /* LevelTest.swift */; };
 		386B159623EB0F2400DA7666 /* Scripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B159523EB0F2400DA7666 /* Scripting.swift */; };
@@ -86,6 +87,7 @@
 		383B515623EC694B005E7C94 /* empty.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = empty.js; sourceTree = "<group>"; };
 		383B515723EC694B005E7C94 /* rolling.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = rolling.js; sourceTree = "<group>"; };
 		383B515B23EC6A8E005E7C94 /* behaviourScript.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = behaviourScript.js; sourceTree = "<group>"; };
+		383B515E23EC98D7005E7C94 /* follower.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = follower.js; sourceTree = "<group>"; };
 		386B159123EAF8A600DA7666 /* ScriptingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptingTest.swift; sourceTree = "<group>"; };
 		386B159323EAF8C200DA7666 /* LevelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelTest.swift; sourceTree = "<group>"; };
 		386B159523EB0F2400DA7666 /* Scripting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scripting.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 			children = (
 				383B515623EC694B005E7C94 /* empty.js */,
 				383B515723EC694B005E7C94 /* rolling.js */,
+				383B515E23EC98D7005E7C94 /* follower.js */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				383B515F23EC98D7005E7C94 /* follower.js in Resources */,
 				383B515423EC5BCA005E7C94 /* action02.mp3 in Resources */,
 				3826DD6D23E9D7F200045BAA /* steps01.mp3 in Resources */,
 				383B515923EC694B005E7C94 /* rolling.js in Resources */,
