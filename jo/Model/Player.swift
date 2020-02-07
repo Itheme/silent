@@ -55,12 +55,16 @@ public class Player: NSObject {
 
 extension Player: StateCollector {
     public func collectState() -> [String : AnyObject]? {
-        let dict: [String : Any] = ["pos": self.pos.string(), "direction": self.direction, "speed": self.speed]
+        let dict: [String : Any] = ["pos": ["x": self.pos.x, "y": self.pos.y], "direction": self.direction, "speed": self.speed]
         return dict as [String : AnyObject]
     }
     public func applyState(state: [String : AnyObject]) {
-        if let p = CGPoint(string: state["pos"] as? String) {
+        if let posString = state["pos"] as? String {
+            guard let p = CGPoint(string: posString) else { return }
             self.pos = p
+        } else {
+            guard let posDict = state["pos"] as? [String: CGFloat] else { return }
+            self.pos = CGPoint(x: posDict["x"]!, y: posDict["y"]!)
         }
     }
 }
