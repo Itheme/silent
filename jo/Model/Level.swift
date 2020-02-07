@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import AudioKit
 
 let ActionProximity: CGFloat = 3.0
 
@@ -46,12 +47,44 @@ extension CGPoint {
     }
 }
 
+class AudioManager: NSObject {
+    var audioFiles: [String: AKAudioFile] = [:]
+    let mixer: AKMixer = AKMixer()
+    init(details: [String: AnyObject]) {
+        super.init()
+        if let ambianceDetails = details["ambiances"] as? [[String:AnyObject]] {
+            for ambiance in ambianceDetails {
+                guard let fileName = ambiance["url"] as? String else { continue }
+                if audioFiles[fileName] == nil {
+                    audioFiles[fileName] = try! AKAudioFile(forReading: Bundle.main.url(forResource: fileName, withExtension: "mp3")!)
+                }
+            }
+        }
+        if let audibleDetails = details["audibles"] as? [[String:AnyObject]] {
+            for audible in audibleDetails {
+                guard let fileName = audible["url"] as? String else { continue }
+                if audioFiles[fileName] == nil {
+                    audioFiles[fileName] = try! AKAudioFile(forReading: Bundle.main.url(forResource: fileName, withExtension: "mp3")!)
+                }
+            }
+        }
+        AudioKit.output = self.mixer
+    }
+    func addPlayer(fileName: String) -> AKPlayer {
+        let player = AKPlayer(audioFile: self.audioFiles[fileName]!)
+        player.isLooping = true
+        self.mixer.connect(input: player)
+        return player
+    }
+}
+
 public class Level: NSObject {
     private var details: [String:AnyObject]
     var player: Player
     var ambiances: [Ambiance] = []
     var audibles: [Audible] = []
     var running: Bool = false
+    let audioManager: AudioManager;
     let engine: AVAudioEngine = AVAudioEngine()
     let scripting: Scripting
     var actionAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "action02", withExtension: "mp3")!)
@@ -60,17 +93,18 @@ public class Level: NSObject {
         self.scripting = Scripting(details: details)
         let playerDetails = (details["player"] as? [String:AnyObject]) ?? [:]
         self.player = Player(initialPoint: (playerDetails["pos"] as? CGPoint) ?? CGPoint(x: 0, y: 0), initialDirection: (playerDetails["direction"] as? CGFloat) ?? 0, scriptingEngine: self.scripting)
+        self.audioManager = AudioManager(details: details)
         super.init()
         if let ambianceDetails = details["ambiances"] as? [[String:AnyObject]] {
             self.ambiances = ambianceDetails.map {
-                Ambiance(details: $0)
+                Ambiance(details: $0, audioManager: self.audioManager)
             }
         } else {
             self.ambiances = []
         }
         if let audibleDetails = details["audibles"] as? [[String:AnyObject]] {
             self.audibles = audibleDetails.map { [unowned self] in
-                return Audible(details: $0, scriptingEngine: self.scripting)
+                return Audible(details: $0, audioManager: self.audioManager, scriptingEngine: self.scripting)
             }
         } else {
             self.audibles = []
@@ -78,6 +112,9 @@ public class Level: NSObject {
         self.scripting.delegate = self
     }
     func run() {
+        if !self.running {
+            try? AudioKit.start()
+        }
         self.ambiances.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
         self.audibles.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
         self.running = true

@@ -7,20 +7,19 @@
 //
 
 import UIKit
-import AVKit
+import AudioKit
 
 open class AbstractAudible: NSObject {
-    var audioPlayer: AVAudioPlayer
+    var audioPlayer: AKPlayer
     var pos: CGPoint
-    init(details: [String: AnyObject]) {
+    init(details: [String: AnyObject], audioManager: AudioManager) {
         let urlString = details["url"] as! String
-        let url = Bundle.main.url(forResource: urlString, withExtension: "mp3")!
         if let posString = details["pos"] as? String {
             self.pos = CGPoint(string: posString)!
         } else {
             let posDict = details["pos"] as! [String:CGFloat]
             self.pos = CGPoint(x: posDict["x"]!, y: posDict["y"]!)
         }
-        self.audioPlayer = try! AVAudioPlayer(contentsOf: url)
+        self.audioPlayer = audioManager.addPlayer(fileName: urlString)
     }
 }
