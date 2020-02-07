@@ -24,84 +24,104 @@ protocol ScriptingCallbackDelegate {
     func callback(representation: ScriptRepresentation) -> Void
 }
 
-struct ScheduleRecord {
-    let code: String
+public struct ScheduleRecord {
+    public let code: String
     let result: [AnyHashable: Any]?
     let callback: ((_ result: [AnyHashable: Any]?) -> Void)?
 }
 
-struct UpdateRecord {
-    let updateScript: String
+public struct UpdateRecord {
+    public let updateScript: String
     let result: [AnyHashable: Any]?
     let representation: ScriptRepresentation
+}
+
+public struct WorkerTasks {
+    public let scripts: [ScheduleRecord] // scripts scheduled for execution
+    public let updateScripts: [UpdateRecord] // entities requiring update
 }
 
 open class Scripting: NSObject {
     var collection: [String: ScriptRepresentation] = [:]
     private var loop: Int = 0
-    var thread: Thread?
+    var workerThread: Thread?
     var updateScheduled: Bool = false
-    var scriptsScheduled: [ScheduleRecord] = []
+    public var scriptsScheduled: [ScheduleRecord] = []
     var shutdownScheduled: Bool = false
     var delegate: ScriptingCallbackDelegate?
     public init(details: [String:AnyObject]) {
         super.init()
-        self.thread = Thread(block: { [unowned self] in
-            let machine = JSVirtualMachine()!
-            let context = JSContext(virtualMachine: machine)!
-            let logClosure: @convention (block) (String, String, String, String) -> Void = { fmt, a, b, c in
-                print(fmt, (a == "undefined") ?"":a, (b == "undefined") ?"":b, (c == "undefined") ?"":c)
-            }
-            context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
-            while true {
-                var scripts: [ScheduleRecord] = []
-                var performShutdown: Bool = false
-                var updateScripts: [UpdateRecord] = []
-                DispatchQueue.main.sync {
-                    scripts = self.scriptsScheduled
-                    self.scriptsScheduled = []
-                    if self.updateScheduled {
-                        self.collection.forEach { (objectName: String, representation: ScriptRepresentation) in
-                            if let script = representation.activeScript {
-                                updateScripts.append(UpdateRecord(updateScript: "\(script)(\(objectName), \(objectName)Params, \(self.loop))", result: nil, representation: representation))
-                            }
-                        }
-                        self.updateScheduled = false
-                    }
-                    performShutdown = self.shutdownScheduled
-                }
-                if performShutdown {
-                    break
-                }
-                var dispatch: Bool = false
-                scripts = scripts.map({ (record: ScheduleRecord) -> ScheduleRecord in
-                    dispatch = dispatch || (record.callback != nil)
-                    if let result = context.evaluateScript(record.code) {
-                        return ScheduleRecord(code: record.code, result: result.toDictionary(), callback: record.callback)
-                    }
-                    return record
-                })
-                if dispatch {
-                    DispatchQueue.main.sync {
-                        for record in scripts {
-                            if let callback = record.callback {
-                                callback(record.result)
-                            }
-                        }
-                    }
-                }
-                if updateScripts.count > 0 {
-                    self.updateCollections(context: context, updateRecords: updateScripts)
-                } else {
-                    Thread.sleep(forTimeInterval: 0.1)
-                }
-            }
-        })
+        self.setupWorkerThread()
         self.scheduleEvaluation(code: "var module = {}; var console = {};")
         if let scripts = details["scripts"] as? [String] {
             self.loadScripts(scripts)
         }
-        self.thread?.start()
+    }
+    open func setupWorkerThread() {
+        self.workerThread = Thread(target: self, selector: Selector("workerLoop"), object: nil)
+        self.workerThread?.start()
+    }
+    @objc public func workerLoop() {
+        let machine = JSVirtualMachine()!
+        let context = JSContext(virtualMachine: machine)!
+        let logClosure: @convention (block) (String, String, String, String) -> Void = { fmt, a, b, c in
+            print(fmt, (a == "undefined") ?"":a, (b == "undefined") ?"":b, (c == "undefined") ?"":c)
+        }
+        context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
+        while let tasks = self.obtainTasks() {
+            var scripts: [ScheduleRecord] = []
+            for record in tasks.scripts {
+                guard let result = context.evaluateScript(record.code) else { continue }
+                guard record.callback != nil else { continue }
+                scripts.append(ScheduleRecord(code: record.code, result: result.toDictionary(), callback: record.callback))
+            }
+            if scripts.count > 0 {
+                self.passToMainThread {
+                    for record in scripts {
+                        record.callback!(record.result)
+                    }
+                }
+            }
+            if tasks.updateScripts.count > 0 {
+                self.updateCollections(context: context, updateRecords: tasks.updateScripts)
+            } else {
+                Thread.sleep(forTimeInterval: 0.1)
+            }
+        }
+    }
+    public func obtainTasks() -> WorkerTasks? {
+        var scripts: [ScheduleRecord] = []
+        var performShutdown: Bool = false
+        var updateScripts: [UpdateRecord] = []
+        self.passToMainThread {
+            if self.shutdownScheduled {
+                performShutdown = true
+            } else {
+                scripts = self.scriptsScheduled
+                self.scriptsScheduled = []
+                if self.updateScheduled {
+                    self.collection.forEach { (objectName: String, representation: ScriptRepresentation) in
+                        if let script = representation.activeScript {
+                            updateScripts.append(UpdateRecord(updateScript: "\(script)(\(objectName), \(objectName)Params, \(self.loop))", result: nil, representation: representation))
+                        }
+                    }
+                    self.updateScheduled = false
+                }
+            }
+        }
+        if performShutdown {
+            return nil
+        }
+        return WorkerTasks(scripts: scripts, updateScripts: updateScripts)
+    }
+    deinit {
+        self.scheduleShutdown()
+    }
+    public func scheduleShutdown() {
+        self.shutdownScheduled = true
+        if let thread = self.workerThread {
+            thread.cancel()
+        }
     }
     func loadScripts(_ scripts: [String]) {
         for scriptName in scripts {
@@ -138,9 +158,9 @@ open class Scripting: NSObject {
         self.collection.removeValue(forKey: id)
     }
     open func scheduleEvaluation(code: String) {
-        return self.scriptsScheduled.append(ScheduleRecord(code: code, result: nil, callback: nil))
+        self.scriptsScheduled.append(ScheduleRecord(code: code, result: nil, callback: nil))
     }
-    open func contextEvaluate(code: String, callback: @escaping (_ result: [AnyHashable : Any]?) -> Void) {
+    public func scheduleEvaluation(code: String, callback: @escaping (_ result: [AnyHashable : Any]?) -> Void) {
         self.scriptsScheduled.append(ScheduleRecord(code: code, result: nil, callback: callback))
     }
 //    open func contextEvaluate(code: String) -> [AnyHashable : Any]? {
@@ -164,7 +184,7 @@ open class Scripting: NSObject {
         let updatedRecords = updateRecords.map { (record: UpdateRecord) -> UpdateRecord in
             return UpdateRecord(updateScript: record.updateScript, result: context.evaluateScript(record.updateScript)?.toDictionary(), representation: record.representation)
         }
-        DispatchQueue.main.sync {
+        self.passToMainThread {
             for record in updatedRecords {
                 if let dict = record.result as? [String: AnyObject] {
                     record.representation.lastState = dict
@@ -175,5 +195,8 @@ open class Scripting: NSObject {
                 }
             }
         }
+    }
+    open func passToMainThread(_ block: @escaping () -> Void) {
+        DispatchQueue.main.sync(execute: block)
     }
 }
