@@ -67,13 +67,17 @@ open class Scripting: NSObject {
         let logClosure: @convention (block) (String, String, String, String) -> Void = { fmt, a, b, c in
             print(fmt, (a == "undefined") ?"":a, (b == "undefined") ?"":b, (c == "undefined") ?"":c)
         }
-        context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
+        var firstRun = true
         while let tasks = self.obtainTasks() {
             var scripts: [ScheduleRecord] = []
             for record in tasks.scripts {
                 guard let result = context.evaluateScript(record.code) else { continue }
                 guard record.callback != nil else { continue }
                 scripts.append(ScheduleRecord(code: record.code, result: result.toDictionary(), callback: record.callback))
+            }
+            if firstRun {
+                context.objectForKeyedSubscript("console")?.setObject(logClosure, forKeyedSubscript: "log")
+                firstRun = false
             }
             if scripts.count > 0 {
                 self.passToMainThread {
