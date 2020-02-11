@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import AudioKit
 
-let ActionProximity: CGFloat = 3.0
+let ActionProximity: CGFloat = 5.0
 
 public protocol StateCollector {
     func collectState() -> [String:AnyObject]?
