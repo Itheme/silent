@@ -55,16 +55,18 @@ class AudioManager: NSObject {
         if let ambianceDetails = details["ambiances"] as? [[String:AnyObject]] {
             for ambiance in ambianceDetails {
                 guard let fileName = ambiance["url"] as? String else { continue }
+                let ext = ambiance["ext"] as? String ?? "mp3"
                 if audioFiles[fileName] == nil {
-                    audioFiles[fileName] = try! AKAudioFile(forReading: Bundle.main.url(forResource: fileName, withExtension: "mp3")!)
+                    audioFiles[fileName] = try! AKAudioFile(forReading: Bundle.main.url(forResource: fileName, withExtension: ext)!)
                 }
             }
         }
         if let audibleDetails = details["audibles"] as? [[String:AnyObject]] {
             for audible in audibleDetails {
                 guard let fileName = audible["url"] as? String else { continue }
+                let ext = audible["ext"] as? String ?? "mp3"
                 if audioFiles[fileName] == nil {
-                    audioFiles[fileName] = try! AKAudioFile(forReading: Bundle.main.url(forResource: fileName, withExtension: "mp3")!)
+                    audioFiles[fileName] = try! AKAudioFile(forReading: Bundle.main.url(forResource: fileName, withExtension: ext)!)
                 }
             }
         }

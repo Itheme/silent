@@ -10,6 +10,7 @@ import UIKit
 import SpriteKit
 import GameplayKit
 import AVKit
+import AudioKit
 
 class GameViewController: UIViewController {
     private var level: Level?
@@ -17,6 +18,7 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         let levelDetailsURL = Bundle.main.url(forResource: "Level1", withExtension: "plist")!
         let dict = NSDictionary.init(contentsOf: levelDetailsURL)
         self.level = Level(details: dict as! [String : AnyObject])
@@ -75,7 +77,7 @@ extension GameViewController: ControlDelegate {
         guard let level = self.level else {
             return
         }
-        level.playerMovement(speed: speed / 10.0, rotation: rotation*10)
+        level.playerMovement(speed: speed / 10.0, rotation: rotation / 10.0)
     }
     func action() {
         self.level!.playerAction()

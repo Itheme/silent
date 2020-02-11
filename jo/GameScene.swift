@@ -16,6 +16,7 @@ protocol ControlDelegate {
 
 // threshold value (in points) for when touch is considered a movement input from user
 let MovementThreshold: CGFloat = 5
+let MovementThresholdRotation: CGFloat = 20
 
 class TouchTracker: NSObject {
     var touch: UITouch
@@ -83,7 +84,7 @@ class GameScene: SKScene {
         }
         guard let control = self.controlDelegate else { return }
         if self.movementTracker == nil {
-            if (abs(pos.x - tracker.initialLocation.x) > MovementThreshold) || (abs(pos.y - tracker.initialLocation.y) > MovementThreshold) {
+            if (abs(pos.x - tracker.initialLocation.x) > MovementThresholdRotation) || (abs(pos.y - tracker.initialLocation.y) > MovementThreshold) {
                 self.movementTracker = tracker
             } else {
                 return
@@ -92,7 +93,8 @@ class GameScene: SKScene {
         if let movementTracker = self.movementTracker {
             if movementTracker == tracker {
                 tracker.speed = (pos.y - tracker.initialLocation.y) / self.size.height
-                control.movement(speed: tracker.speed, rotation: (pos.x - touch.previousLocation(in: self).x) / self.size.width)
+                let rotation = (abs(pos.x - tracker.initialLocation.x) > MovementThresholdRotation) ?((pos.x - tracker.initialLocation.x) / self.size.width):0
+                control.movement(speed: tracker.speed, rotation: rotation)
             }
         }
     }

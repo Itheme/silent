@@ -21,7 +21,9 @@
 			<key>id</key>
 			<string>thingie</string>
 			<key>url</key>
-			<string>ambtest</string>
+			<string>a-dirty</string>
+            <key>ext</key>
+            <string>m4a</string>
 			<key>script</key>
 			<string>rolling</string>
             <key>params</key>
@@ -49,7 +51,9 @@
             <key>id</key>
             <string>thingie2</string>
             <key>url</key>
-            <string>ambtest</string>
+            <string>a-far</string>
+            <key>ext</key>
+            <string>m4a</string>
             <key>script</key>
             <string>rolling</string>
             <key>params</key>
@@ -77,13 +81,15 @@
             <key>id</key>
             <string>thingie3</string>
             <key>url</key>
-            <string>ambtest</string>
+            <string>a-noise-swipe</string>
+            <key>ext</key>
+            <string>m4a</string>
             <key>script</key>
             <string>follower</string>
             <key>params</key>
             <dict>
                 <key>k</key>
-                <real>0.4</real>
+                <real>0.04</real>
             </dict>
         </dict>
 	</array>

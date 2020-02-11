@@ -44,7 +44,8 @@ extension Player: ConsistencyChecker {
 extension AbstractAudible {
     static func genericCheckConsistency(details: [String:AnyObject]) -> Bool {
         if let urlString = details["url"] as? String {
-            if let url = Bundle.main.url(forResource: urlString, withExtension: "mp3") {
+            let ext = details["ext"] as? String ?? "mp3"
+            if let url = Bundle.main.url(forResource: urlString, withExtension: ext) {
                 if let _ = try? AVAudioPlayer(contentsOf: url) {
                     if let _ = details["pos"] as? String {
                         return true
