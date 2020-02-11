@@ -92,6 +92,37 @@
                 <real>0.04</real>
             </dict>
         </dict>
+        <dict>
+            <key>pos</key>
+            <dict>
+                <key>x</key>
+                <integer>5</integer>
+                <key>y</key>
+                <integer>5</integer>
+            </dict>
+            <key>id</key>
+            <string>lastThingie</string>
+            <key>url</key>
+            <string>a-maj104-tailless</string>
+            <key>ext</key>
+            <string>m4a</string>
+            <key>script</key>
+            <string>rolling</string>
+            <key>params</key>
+            <dict>
+                <key>angle</key>
+                <real>0</real>
+                <key>speed</key>
+                <real>0.01</real>
+                <key>radius</key>
+                <real>40</real>
+                <key>originX</key>
+                <real>0</real>
+                <key>originY</key>
+                <real>0</real>
+            </dict>
+        </dict>
+
 	</array>
 	<key>ambiances</key>
 	<array>

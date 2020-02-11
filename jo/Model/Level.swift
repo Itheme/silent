@@ -125,7 +125,7 @@ public class Level: NSObject {
         
     }
     func playerMovement(speed: CGFloat, rotation: CGFloat) {
-        self.player.set(speed: speed, direction: self.player.direction + (rotation / 10.0))
+        self.player.set(speed: speed, direction: self.player.direction + (rotation * 0.5))
         let dx: CGFloat = cos(self.player.direction)*speed
         let dy: CGFloat = sin(self.player.direction)*speed
         self.player.pos.x += dx
@@ -152,6 +152,6 @@ extension Level: ScriptingCallbackDelegate {
         if let p = representation.object as? Perspective {
             p.applyPlayerPerspective(player: self.player, run: false)
         }
-        print("\(self.player.pos) \(self.player.direction) \(representation.lastState["pos"]!)")
+        print("\(self.player.pos) \(self.player.direction) \(representation.lastState)")
     }
 }

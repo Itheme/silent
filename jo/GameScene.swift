@@ -14,6 +14,14 @@ protocol ControlDelegate {
     func action()
 }
 
+enum ControlAction: Int, CaseIterable {
+    case moveForward = 0
+    case moveBackward
+    case turn
+    case strike
+}
+
+typealias ControlActions = Set<ControlAction>
 // threshold value (in points) for when touch is considered a movement input from user
 let MovementThreshold: CGFloat = 5
 let MovementThresholdRotation: CGFloat = 20
@@ -23,22 +31,48 @@ class TouchTracker: NSObject {
     weak var scene: SKScene?
     let initialLocation: CGPoint
     var speed: CGFloat = 0
+    var rotation: CGFloat = 0
+    var actions: ControlActions = []
     init(touch: UITouch, in scene: SKScene) {
         self.touch = touch
         self.scene = scene
         self.initialLocation = touch.location(in: scene)
     }
+    func set(speed: CGFloat, rotaion: CGFloat, availableActions: ControlActions) {
+        var actions: ControlActions = []
+        if (availableActions.contains(.moveForward) && (speed > 0.0)) || (availableActions.contains(.moveBackward) && (speed < 0.0)) {
+            actions.insert((speed > 0.0) ?.moveForward:.moveBackward)
+            self.speed = speed
+        } else {
+            self.speed = 0
+        }
+        if (availableActions.contains(.turn)) {
+            actions.insert(.turn)
+            self.rotation = rotaion
+        } else {
+            self.rotation = 0
+        }
+        self.actions = actions
+    }
 }
 
 class GameScene: SKScene {
-    
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     var controlDelegate: ControlDelegate?
     var trackingTouches: [TouchTracker] = []
     var movementTracker: TouchTracker?
+    var availableActions: ControlActions = [.moveForward, .moveBackward, .turn, .strike]
+    var actionStartTimes: [CFAbsoluteTime?]
+    required init?(coder: NSCoder) {
+        var actionStartTimes: [CFAbsoluteTime?] = []
+        for _ in ControlAction.allCases {
+            actionStartTimes.append(nil)
+        }
+        self.actionStartTimes = actionStartTimes
+        super.init(coder: coder)
+    }
     override func didMove(to view: SKView) {
-        
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
         if let label = self.label {
@@ -70,6 +104,17 @@ class GameScene: SKScene {
         }
     }
     
+    func allowMovement(dx: CGFloat, dy: CGFloat) -> Bool {
+        if abs(dx) > MovementThresholdRotation {
+            if self.availableActions.contains(.turn) {
+                return true
+            }
+        }
+        if dy > MovementThreshold {
+            return self.availableActions.contains(.moveForward)
+        }
+        return (dy < -MovementThreshold) && self.availableActions.contains(.moveBackward)
+    }
     func touchMoved(touch: UITouch) {
         let pos = touch.location(in: self)
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
@@ -84,7 +129,7 @@ class GameScene: SKScene {
         }
         guard let control = self.controlDelegate else { return }
         if self.movementTracker == nil {
-            if (abs(pos.x - tracker.initialLocation.x) > MovementThresholdRotation) || (abs(pos.y - tracker.initialLocation.y) > MovementThreshold) {
+            if self.allowMovement(dx: pos.x - tracker.initialLocation.x, dy: pos.y - tracker.initialLocation.y) {
                 self.movementTracker = tracker
             } else {
                 return
@@ -92,9 +137,10 @@ class GameScene: SKScene {
         }
         if let movementTracker = self.movementTracker {
             if movementTracker == tracker {
-                tracker.speed = (pos.y - tracker.initialLocation.y) / self.size.height
                 let rotation = (abs(pos.x - tracker.initialLocation.x) > MovementThresholdRotation) ?((pos.x - tracker.initialLocation.x) / self.size.width):0
-                control.movement(speed: tracker.speed, rotation: rotation)
+                tracker.set(speed: (pos.y - tracker.initialLocation.y) / self.size.height, rotaion: rotation, availableActions: self.availableActions)
+                
+                control.movement(speed: tracker.speed, rotation: tracker.rotation)
             }
         }
     }
