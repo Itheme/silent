@@ -45,6 +45,8 @@
 		38E9071023F2F63E00721C78 /* a-maj104-tailless-narrationback.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 38E9070623F2F63E00721C78 /* a-maj104-tailless-narrationback.m4a */; };
 		38E9071123F2F63E00721C78 /* a-dirty.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 38E9070723F2F63E00721C78 /* a-dirty.m4a */; };
 		38E9071223F2F63E00721C78 /* a-noise-swipe.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 38E9070823F2F63E00721C78 /* a-noise-swipe.m4a */; };
+		38FEDD6423F4728400986E05 /* death01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD6323F4728400986E05 /* death01.mp3 */; };
+		38FEDD6623F47AE300986E05 /* action03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD6523F47AE300986E05 /* action03.mp3 */; };
 		EF7BE2B1FF2F5E0FB1147FFF /* libPods-joTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0833EA42DE3CAFC39FFA7808 /* libPods-joTests.a */; };
 		F76CE42BBC9F2C7BD2EDA0A2 /* libPods-jo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2B1D3DAAB4232DD3EA4633 /* libPods-jo.a */; };
 /* End PBXBuildFile section */
@@ -114,6 +116,8 @@
 		38E9070623F2F63E00721C78 /* a-maj104-tailless-narrationback.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "a-maj104-tailless-narrationback.m4a"; sourceTree = "<group>"; };
 		38E9070723F2F63E00721C78 /* a-dirty.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "a-dirty.m4a"; sourceTree = "<group>"; };
 		38E9070823F2F63E00721C78 /* a-noise-swipe.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "a-noise-swipe.m4a"; sourceTree = "<group>"; };
+		38FEDD6323F4728400986E05 /* death01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = death01.mp3; sourceTree = "<group>"; };
+		38FEDD6523F47AE300986E05 /* action03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = action03.mp3; sourceTree = "<group>"; };
 		3F313ED4BDAD7EBC86D4A6AD /* Pods-jo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jo.release.xcconfig"; path = "Target Support Files/Pods-jo/Pods-jo.release.xcconfig"; sourceTree = "<group>"; };
 		7608529CCC86C34DB12CF6E2 /* Pods-jo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jo.debug.xcconfig"; path = "Target Support Files/Pods-jo/Pods-jo.debug.xcconfig"; sourceTree = "<group>"; };
 		761E22E255725A464D108ADC /* Pods-joTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-joTests.release.xcconfig"; path = "Target Support Files/Pods-joTests/Pods-joTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -236,6 +240,7 @@
 			children = (
 				383B515123EC5A34005E7C94 /* action01.mp3 */,
 				383B515323EC5BCA005E7C94 /* action02.mp3 */,
+				38FEDD6523F47AE300986E05 /* action03.mp3 */,
 				3826DD6C23E9D7F100045BAA /* steps01.mp3 */,
 				3826DD6223E9888600045BAA /* amb01.mp3 */,
 				3826DD6A23E9AD5E00045BAA /* ambtest.mp3 */,
@@ -248,6 +253,7 @@
 				38E9070023F2F63E00721C78 /* a-slightg.m4a */,
 				38E9070523F2F63E00721C78 /* cs-fs.m4a */,
 				38E9070323F2F63E00721C78 /* taps-tailless.m4a */,
+				38FEDD6323F4728400986E05 /* death01.mp3 */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -405,6 +411,7 @@
 				383B515923EC694B005E7C94 /* rolling.js in Resources */,
 				38E9071123F2F63E00721C78 /* a-dirty.m4a in Resources */,
 				3826DD2C23E9790800045BAA /* Main.storyboard in Resources */,
+				38FEDD6623F47AE300986E05 /* action03.mp3 in Resources */,
 				3826DD6B23E9AD5E00045BAA /* ambtest.mp3 in Resources */,
 				38E9071223F2F63E00721C78 /* a-noise-swipe.m4a in Resources */,
 				38E9070923F2F63E00721C78 /* a-glitch-tailless_.m4a in Resources */,
@@ -413,6 +420,7 @@
 				3826DD6323E9888600045BAA /* amb01.mp3 in Resources */,
 				3826DD2E23E9790B00045BAA /* Assets.xcassets in Resources */,
 				38E9070D23F2F63E00721C78 /* taps-tailless.m4a in Resources */,
+				38FEDD6423F4728400986E05 /* death01.mp3 in Resources */,
 				3826DD3123E9790B00045BAA /* LaunchScreen.storyboard in Resources */,
 				3826DD2523E9790800045BAA /* Actions.sks in Resources */,
 				38E9070C23F2F63E00721C78 /* a-maj104-tailless.m4a in Resources */,
