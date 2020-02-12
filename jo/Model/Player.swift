@@ -22,7 +22,7 @@ public class Player: NSObject {
         self.direction = initialDirection
         scriptingEngine.createRepresentation(for: "player", params: nil, object: self)
         self.audioPlayer.prepareToPlay()
-        self.audioPlayer.volume = 0.2
+        self.audioPlayer.volume = 0.12
         self.audioPlayer.numberOfLoops = -1
     }
     func set(speed: CGFloat, direction: CGFloat) {
@@ -50,6 +50,9 @@ public class Player: NSObject {
     }
     func updateScriptingContext(engine: Scripting) {
         engine.updateRepresentation(for: "player", object: self)
+    }
+    func stop() {
+        self.audioPlayer.stop()
     }
 
 }

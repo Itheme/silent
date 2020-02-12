@@ -22,4 +22,7 @@ open class AbstractAudible: NSObject {
         }
         self.audioPlayer = audioManager.addPlayer(fileName: urlString)
     }
+    func stop() {
+        self.audioPlayer.stop()
+    }
 }

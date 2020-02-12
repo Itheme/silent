@@ -41,6 +41,12 @@ public struct WorkerTasks {
     public let updateScripts: [UpdateRecord] // entities requiring update
 }
 
+enum GameEvent {
+    case death
+}
+
+typealias GameEvents = Set<GameEvent>
+
 open class Scripting: NSObject {
     var collection: [String: ScriptRepresentation] = [:]
     private var loop: Int = 0
@@ -49,6 +55,7 @@ open class Scripting: NSObject {
     public var scriptsScheduled: [ScheduleRecord] = []
     var shutdownScheduled: Bool = false
     var delegate: ScriptingCallbackDelegate?
+    var events: GameEvents = []
     public init(details: [String:AnyObject]) {
         super.init()
         self.setupWorkerThread()
@@ -58,7 +65,7 @@ open class Scripting: NSObject {
         }
     }
     open func setupWorkerThread() {
-        self.workerThread = Thread(target: self, selector: Selector("workerLoop"), object: nil)
+        self.workerThread = Thread(target: self, selector: Selector(stringLiteral: "workerLoop"), object: nil)
         self.workerThread?.start()
     }
     @objc public func workerLoop() {

@@ -13,12 +13,16 @@ public class Ambiance: AbstractAudible {
     var inverted: Bool = false
     var inversionRadius0: Float = 1
     var inversionRadius1: Float = 1
+    var deadlyRadius: Float?
+    var deadly: Bool
     override init(details: [String:AnyObject], audioManager: AudioManager) {
         if let inversion = details["inversion"] as? [String:AnyObject] { // inversion radiuses
             self.inverted = true
             self.inversionRadius0 = inversion["r0"] as! Float
             self.inversionRadius1 = inversion["r1"] as! Float
         }
+        self.deadlyRadius = details["deadlyRadius"] as? Float
+        self.deadly = (details["deadly"] as? Bool) ?? false
         super.init(details: details, audioManager: audioManager)
         
         self.audioPlayer.isLooping = true
