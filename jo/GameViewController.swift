@@ -74,7 +74,7 @@ class GameViewController: UIViewController {
             view.showsNodeCount = true
             self.levelManager!.currentLevel!.run()
         }
-        let touchGesture = UITapGestureRecognizer(target: self, action: Selector(stringLiteral: "viewTouch:"))
+        let touchGesture = UITapGestureRecognizer(target: self, action: #selector(viewTouch(_:)))
         touchGesture.numberOfTapsRequired = 1
         touchGesture.numberOfTouchesRequired = 1
         self.view.addGestureRecognizer(touchGesture)

@@ -65,7 +65,7 @@ open class Scripting: NSObject {
         }
     }
     open func setupWorkerThread() {
-        self.workerThread = Thread(target: self, selector: Selector(stringLiteral: "workerLoop"), object: nil)
+        self.workerThread = Thread(target: self, selector: #selector(workerLoop), object: nil)
         self.workerThread?.start()
     }
     @objc public func workerLoop() {
