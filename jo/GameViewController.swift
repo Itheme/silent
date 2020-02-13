@@ -13,9 +13,16 @@ import AVKit
 import AudioKit
 
 class GameViewController: UIViewController {
-    private var levelName: String?
-    private var level: Level?
+    public var levelManager: LevelManager?
     private var running: Bool = false
+    var level: Level? {
+        get {
+            if let levelManager = self.levelManager {
+                return levelManager.currentLevel
+            }
+            return nil
+        }
+    }
     var actionAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "action01", withExtension: "mp3")!)
     var actionFailedAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "action03", withExtension: "mp3")!)
     var deathAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "death01", withExtension: "mp3")!)
@@ -46,7 +53,6 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.levelName = "Level1"
         self.restartLevel()
         
         if let view = self.view as! SKView? {
@@ -64,7 +70,7 @@ class GameViewController: UIViewController {
             
             view.showsFPS = true
             view.showsNodeCount = true
-            self.level!.run()
+            self.levelManager!.currentLevel!.run()
         }
         let touchGesture = UITapGestureRecognizer(target: self, action: Selector(stringLiteral: "viewTouch:"))
         touchGesture.numberOfTapsRequired = 1
@@ -75,19 +81,7 @@ class GameViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     func restartLevel() {
-        guard let name = self.levelName else { return }
-        let levelDetailsURL = Bundle.main.url(forResource: name, withExtension: "plist")!
-        // todo: preserve audio manager for seamless effects and CPU load
-        let dict = NSDictionary.init(contentsOf: levelDetailsURL)
-        var audio: AudioManager? = nil
-        if let previousLevel = self.level {
-            if previousLevel.name == name {
-                audio = previousLevel.audioManager
-            } else {
-                previousLevel.audioManager.stop()
-            }
-        }
-        self.level = Level(name: name, details: dict as! [String : AnyObject], audioManager: audio)
+        self.levelManager!.restartLevel()
         self.running = true
     }
     override var shouldAutorotate: Bool {

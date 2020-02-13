@@ -50,11 +50,14 @@ extension CGPoint {
 class AudioManager: NSObject {
     var audioFiles: [String: AKAudioFile] = [:]
     let mixer: AKMixer = AKMixer()
-    init(details: [String: AnyObject]) {
+    override init() {
         super.init()
+        AudioKit.output = self.mixer
+    }
+    func addAllFiles(details: [String: AnyObject]) {
+        self.audioFiles = [:]
         self.addFiles(fileDetails: details["audibles"] as? [[String:AnyObject]])
         self.addFiles(fileDetails: details["ambiances"] as? [[String:AnyObject]])
-        AudioKit.output = self.mixer
     }
     func addFiles(fileDetails: [[String: AnyObject]]?) {
         guard let array = fileDetails else {
@@ -99,17 +102,13 @@ public class Level: NSObject {
     let engine: AVAudioEngine = AVAudioEngine()
     let scripting: Scripting
     var actionAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "action02", withExtension: "mp3")!)
-    init(name: String, details: [String:AnyObject], audioManager: AudioManager?) {
+    init(name: String, details: [String:AnyObject], audioManager: AudioManager) {
         self.name = name
         self.details = details
         self.scripting = Scripting(details: details)
         let playerDetails = (details["player"] as? [String:AnyObject]) ?? [:]
         self.player = Player(initialPoint: (playerDetails["pos"] as? CGPoint) ?? CGPoint(x: 0, y: 0), initialDirection: (playerDetails["direction"] as? CGFloat) ?? 0, scriptingEngine: self.scripting)
-        if let audio = audioManager {
-            self.audioManager = audio
-        } else {
-            self.audioManager = AudioManager(details: details)
-        }
+        self.audioManager = audioManager
         super.init()
         if let ambianceDetails = details["ambiances"] as? [[String:AnyObject]] {
             self.ambiances = ambianceDetails.map {

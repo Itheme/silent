@@ -47,6 +47,8 @@
 		38E9071223F2F63E00721C78 /* a-noise-swipe.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 38E9070823F2F63E00721C78 /* a-noise-swipe.m4a */; };
 		38FEDD6423F4728400986E05 /* death01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD6323F4728400986E05 /* death01.mp3 */; };
 		38FEDD6623F47AE300986E05 /* action03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD6523F47AE300986E05 /* action03.mp3 */; };
+		38FEDD6823F58F9000986E05 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FEDD6723F58F8F00986E05 /* StartViewController.swift */; };
+		38FEDD6C23F593EA00986E05 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FEDD6B23F593EA00986E05 /* LevelManager.swift */; };
 		EF7BE2B1FF2F5E0FB1147FFF /* libPods-joTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0833EA42DE3CAFC39FFA7808 /* libPods-joTests.a */; };
 		F76CE42BBC9F2C7BD2EDA0A2 /* libPods-jo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2B1D3DAAB4232DD3EA4633 /* libPods-jo.a */; };
 /* End PBXBuildFile section */
@@ -118,6 +120,8 @@
 		38E9070823F2F63E00721C78 /* a-noise-swipe.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "a-noise-swipe.m4a"; sourceTree = "<group>"; };
 		38FEDD6323F4728400986E05 /* death01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = death01.mp3; sourceTree = "<group>"; };
 		38FEDD6523F47AE300986E05 /* action03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = action03.mp3; sourceTree = "<group>"; };
+		38FEDD6723F58F8F00986E05 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		38FEDD6B23F593EA00986E05 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
 		3F313ED4BDAD7EBC86D4A6AD /* Pods-jo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jo.release.xcconfig"; path = "Target Support Files/Pods-jo/Pods-jo.release.xcconfig"; sourceTree = "<group>"; };
 		7608529CCC86C34DB12CF6E2 /* Pods-jo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jo.debug.xcconfig"; path = "Target Support Files/Pods-jo/Pods-jo.debug.xcconfig"; sourceTree = "<group>"; };
 		761E22E255725A464D108ADC /* Pods-joTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-joTests.release.xcconfig"; path = "Target Support Files/Pods-joTests/Pods-joTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -183,6 +187,7 @@
 				3826DD2223E9790800045BAA /* GameScene.sks */,
 				3826DD2423E9790800045BAA /* Actions.sks */,
 				3826DD2623E9790800045BAA /* GameScene.swift */,
+				38FEDD6723F58F8F00986E05 /* StartViewController.swift */,
 				3826DD2823E9790800045BAA /* GameViewController.swift */,
 				3826DD2A23E9790800045BAA /* Main.storyboard */,
 				3826DD2D23E9790B00045BAA /* Assets.xcassets */,
@@ -218,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				3826DD5A23E97B6200045BAA /* Level.swift */,
+				38FEDD6B23F593EA00986E05 /* LevelManager.swift */,
 				3826DD6E23E9EE4C00045BAA /* Ambiance.swift */,
 				3826DD6623E9971300045BAA /* Player.swift */,
 				386B159523EB0F2400DA7666 /* Scripting.swift */,
@@ -520,8 +526,10 @@
 				3826DD6923E997CB00045BAA /* AbstractAudible.swift in Sources */,
 				3826DD2723E9790800045BAA /* GameScene.swift in Sources */,
 				3826DD2923E9790800045BAA /* GameViewController.swift in Sources */,
+				38FEDD6C23F593EA00986E05 /* LevelManager.swift in Sources */,
 				3826DD5B23E97B6200045BAA /* Level.swift in Sources */,
 				386B159623EB0F2400DA7666 /* Scripting.swift in Sources */,
+				38FEDD6823F58F9000986E05 /* StartViewController.swift in Sources */,
 				3826DD6723E9971300045BAA /* Player.swift in Sources */,
 				3826DD6F23E9EE4C00045BAA /* Ambiance.swift in Sources */,
 				3826DD7123E9F36B00045BAA /* Audible.swift in Sources */,
