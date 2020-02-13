@@ -49,6 +49,8 @@
 		38FEDD6623F47AE300986E05 /* action03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD6523F47AE300986E05 /* action03.mp3 */; };
 		38FEDD6823F58F9000986E05 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FEDD6723F58F8F00986E05 /* StartViewController.swift */; };
 		38FEDD6C23F593EA00986E05 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FEDD6B23F593EA00986E05 /* LevelManager.swift */; };
+		38FEDD6E23F5D28800986E05 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FEDD6D23F5D28700986E05 /* AudioManager.swift */; };
+		38FEDD7023F5D2F600986E05 /* Level2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD6F23F5D2F600986E05 /* Level2.plist */; };
 		EF7BE2B1FF2F5E0FB1147FFF /* libPods-joTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0833EA42DE3CAFC39FFA7808 /* libPods-joTests.a */; };
 		F76CE42BBC9F2C7BD2EDA0A2 /* libPods-jo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2B1D3DAAB4232DD3EA4633 /* libPods-jo.a */; };
 /* End PBXBuildFile section */
@@ -122,6 +124,8 @@
 		38FEDD6523F47AE300986E05 /* action03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = action03.mp3; sourceTree = "<group>"; };
 		38FEDD6723F58F8F00986E05 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		38FEDD6B23F593EA00986E05 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
+		38FEDD6D23F5D28700986E05 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		38FEDD6F23F5D2F600986E05 /* Level2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Level2.plist; sourceTree = "<group>"; };
 		3F313ED4BDAD7EBC86D4A6AD /* Pods-jo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jo.release.xcconfig"; path = "Target Support Files/Pods-jo/Pods-jo.release.xcconfig"; sourceTree = "<group>"; };
 		7608529CCC86C34DB12CF6E2 /* Pods-jo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jo.debug.xcconfig"; path = "Target Support Files/Pods-jo/Pods-jo.debug.xcconfig"; sourceTree = "<group>"; };
 		761E22E255725A464D108ADC /* Pods-joTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-joTests.release.xcconfig"; path = "Target Support Files/Pods-joTests/Pods-joTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				3826DD5A23E97B6200045BAA /* Level.swift */,
+				38FEDD6D23F5D28700986E05 /* AudioManager.swift */,
 				38FEDD6B23F593EA00986E05 /* LevelManager.swift */,
 				3826DD6E23E9EE4C00045BAA /* Ambiance.swift */,
 				3826DD6623E9971300045BAA /* Player.swift */,
@@ -237,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				3826DD5F23E9854C00045BAA /* Level1.plist */,
+				38FEDD6F23F5D2F600986E05 /* Level2.plist */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -419,6 +425,7 @@
 				3826DD2C23E9790800045BAA /* Main.storyboard in Resources */,
 				38FEDD6623F47AE300986E05 /* action03.mp3 in Resources */,
 				3826DD6B23E9AD5E00045BAA /* ambtest.mp3 in Resources */,
+				38FEDD7023F5D2F600986E05 /* Level2.plist in Resources */,
 				38E9071223F2F63E00721C78 /* a-noise-swipe.m4a in Resources */,
 				38E9070923F2F63E00721C78 /* a-glitch-tailless_.m4a in Resources */,
 				383B515223EC5A35005E7C94 /* action01.mp3 in Resources */,
@@ -529,6 +536,7 @@
 				38FEDD6C23F593EA00986E05 /* LevelManager.swift in Sources */,
 				3826DD5B23E97B6200045BAA /* Level.swift in Sources */,
 				386B159623EB0F2400DA7666 /* Scripting.swift in Sources */,
+				38FEDD6E23F5D28800986E05 /* AudioManager.swift in Sources */,
 				38FEDD6823F58F9000986E05 /* StartViewController.swift in Sources */,
 				3826DD6723E9971300045BAA /* Player.swift in Sources */,
 				3826DD6F23E9EE4C00045BAA /* Ambiance.swift in Sources */,
