@@ -51,6 +51,7 @@
 		38FEDD6C23F593EA00986E05 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FEDD6B23F593EA00986E05 /* LevelManager.swift */; };
 		38FEDD6E23F5D28800986E05 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FEDD6D23F5D28700986E05 /* AudioManager.swift */; };
 		38FEDD7023F5D2F600986E05 /* Level2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD6F23F5D2F600986E05 /* Level2.plist */; };
+		38FEDD7223F5D9C600986E05 /* completion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD7123F5D9C500986E05 /* completion.mp3 */; };
 		EF7BE2B1FF2F5E0FB1147FFF /* libPods-joTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0833EA42DE3CAFC39FFA7808 /* libPods-joTests.a */; };
 		F76CE42BBC9F2C7BD2EDA0A2 /* libPods-jo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2B1D3DAAB4232DD3EA4633 /* libPods-jo.a */; };
 /* End PBXBuildFile section */
@@ -126,6 +127,7 @@
 		38FEDD6B23F593EA00986E05 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
 		38FEDD6D23F5D28700986E05 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		38FEDD6F23F5D2F600986E05 /* Level2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Level2.plist; sourceTree = "<group>"; };
+		38FEDD7123F5D9C500986E05 /* completion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = completion.mp3; sourceTree = "<group>"; };
 		3F313ED4BDAD7EBC86D4A6AD /* Pods-jo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jo.release.xcconfig"; path = "Target Support Files/Pods-jo/Pods-jo.release.xcconfig"; sourceTree = "<group>"; };
 		7608529CCC86C34DB12CF6E2 /* Pods-jo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jo.debug.xcconfig"; path = "Target Support Files/Pods-jo/Pods-jo.debug.xcconfig"; sourceTree = "<group>"; };
 		761E22E255725A464D108ADC /* Pods-joTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-joTests.release.xcconfig"; path = "Target Support Files/Pods-joTests/Pods-joTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				38E9070023F2F63E00721C78 /* a-slightg.m4a */,
 				38E9070523F2F63E00721C78 /* cs-fs.m4a */,
 				38E9070323F2F63E00721C78 /* taps-tailless.m4a */,
+				38FEDD7123F5D9C500986E05 /* completion.mp3 */,
 				38FEDD6323F4728400986E05 /* death01.mp3 */,
 			);
 			path = Audio;
@@ -419,6 +422,7 @@
 				383B515F23EC98D7005E7C94 /* follower.js in Resources */,
 				383B515423EC5BCA005E7C94 /* action02.mp3 in Resources */,
 				3826DD6D23E9D7F200045BAA /* steps01.mp3 in Resources */,
+				38FEDD7223F5D9C600986E05 /* completion.mp3 in Resources */,
 				38E9070E23F2F63E00721C78 /* a-far.m4a in Resources */,
 				383B515923EC694B005E7C94 /* rolling.js in Resources */,
 				38E9071123F2F63E00721C78 /* a-dirty.m4a in Resources */,
