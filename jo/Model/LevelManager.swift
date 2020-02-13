@@ -10,7 +10,7 @@ import UIKit
 
 // ensures seemless level loading and switching
 class LevelManager: NSObject {
-    static let loadedNotification = NSNotification.Name("levelLoaded")
+    //static let loadedNotification = NSNotification.Name("levelLoaded")
     var audioManager: AudioManager = AudioManager()
     var currentLevelName: String?
     var currentLevel: Level?
@@ -19,11 +19,11 @@ class LevelManager: NSObject {
     }
     func loadLevel(name: String, callback: @escaping (_ level: Level) -> Void) {
         let details = self.levelDetails(levelName: name)
-        if let previousLevel = self.currentLevel {
-            if name != previousLevel.name {
-                self.audioManager.stop()
-            }
-        }
+//        if let previousLevel = self.currentLevel {
+//            if name != previousLevel.name {
+//                self.audioManager.stop()
+//            }
+//        }
         DispatchQueue.global(qos: .background).async {
             let level = self.loadLevelSync(name: name, details: details, audio: self.audioManager)
             DispatchQueue.main.async {

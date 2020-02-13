@@ -25,36 +25,38 @@ class GameViewController: UIViewController {
     }
     var actionAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "action01", withExtension: "mp3")!)
     var actionFailedAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "action03", withExtension: "mp3")!)
+    var completionAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "completion", withExtension: "mp3")!)
     var deathAudioPlayer: AVAudioPlayer = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "death01", withExtension: "mp3")!)
 
     let synthesizer = AVSpeechSynthesizer()
     let utteranceRestarting = AVSpeechUtterance(string: "Restarting")
+    let level2 = AVSpeechUtterance(string: "Level one completed. Level 2")
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         NotificationCenter.default.addObserver(forName: Level.deathNotification, object: nil, queue: OperationQueue.main) { (notification: Notification) in
-            if let level = self.level {
-                self.deathAudioPlayer.play()
-                self.running = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                    level.stop()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
-                        self.utteranceRestarting.rate = 0.4
-                        self.utteranceRestarting.volume = 0.8
-                        self.utteranceRestarting.voice = AVSpeechSynthesisVoice(language: "en-US")
-                        self.synthesizer.speak(self.utteranceRestarting)
-                        self.restartLevel()
-                    })
+            self.deathAudioPlayer.play()
+            self.breakEvent(utterance: self.utteranceRestarting, breakTime: .now() + 10) {
+                self.levelManager!.restartLevel()
+                self.running = true
+            }
+        }
+        NotificationCenter.default.addObserver(forName: Level.levelCompletedNotification, object: nil, queue: OperationQueue.main) { (notification: Notification) in
+            self.completionAudioPlayer.play()
+            self.breakEvent(utterance: self.level2, breakTime: .now() + 1) {
+                self.levelManager!.loadLevel(name: "Level2", callback: { (level: Level) in
+                    self.running = true
                 })
             }
         }
         actionFailedAudioPlayer.volume = 0.03
+        completionAudioPlayer.volume = 0.6
     }
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.restartLevel()
-        
+        self.running = true
+
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
             if let scene = SKScene(fileNamed: "GameScene") {
@@ -79,10 +81,6 @@ class GameViewController: UIViewController {
     }
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-    func restartLevel() {
-        self.levelManager!.restartLevel()
-        self.running = true
     }
     override var shouldAutorotate: Bool {
         return true
@@ -112,6 +110,21 @@ class GameViewController: UIViewController {
             self.level!.playerAction()
             self.actionAudioPlayer.play()
         }
+    }
+    
+    func breakEvent(utterance: AVSpeechUtterance, breakTime: DispatchTime, callback: @escaping () -> Void) {
+        guard let level = self.level else { return }
+        self.running = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            level.stop()
+            DispatchQueue.main.asyncAfter(deadline: breakTime, execute: {
+                utterance.rate = 0.4
+                utterance.volume = 0.8
+                utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+                self.synthesizer.speak(utterance)
+                callback()
+            })
+        })
     }
 }
 

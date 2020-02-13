@@ -56,6 +56,7 @@ extension CGPoint {
 }
 public class Level: NSObject {
     static let deathNotification = NSNotification.Name("death")
+    static let levelCompletedNotification = NSNotification.Name("levelCompleted")
     private var details: [String:AnyObject]
     let name: String
     var player: Player
@@ -106,7 +107,11 @@ public class Level: NSObject {
                 }
             }
         }
-        self.audibles.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
+        if self.audibles.count > 0 {
+            self.audibles.forEach { $0.applyPlayerPerspective(player: self.player, run: !self.running) }
+        } else {
+            NotificationCenter.default.post(name: Level.levelCompletedNotification, object: nil)
+        }
         self.running = true
         
         self.scripting.update()// { (id: String, representation: ScriptRepresentation) in
