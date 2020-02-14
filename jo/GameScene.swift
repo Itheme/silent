@@ -10,6 +10,7 @@ import SpriteKit
 import GameplayKit
 
 protocol ControlDelegate {
+    func currentAvailableActions() -> ControlActions
     func movement(speed: CGFloat, rotation: CGFloat)
     func action()
 }
@@ -62,7 +63,14 @@ class GameScene: SKScene {
     var controlDelegate: ControlDelegate?
     var trackingTouches: [TouchTracker] = []
     var movementTracker: TouchTracker?
-    var availableActions: ControlActions = [.moveForward, .moveBackward, .turn, .strike]
+    var availableActions: ControlActions {
+        get {
+            if let delegate = self.controlDelegate {
+                return delegate.currentAvailableActions()
+            }
+            return [.moveForward, .moveBackward, .turn, .strike]
+        }
+    }
     var actionStartTimes: [CFAbsoluteTime?]
     required init?(coder: NSCoder) {
         var actionStartTimes: [CFAbsoluteTime?] = []

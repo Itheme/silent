@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>scripts</key>
+	<array>
+		<string>empty</string>
+		<string>rolling</string>
+		<string>follower</string>
+	</array>
+	<key>audibles</key>
+	<array>
+		<dict>
+			<key>pos</key>
+			<dict>
+				<key>x</key>
+				<integer>20</integer>
+				<key>y</key>
+				<integer>20</integer>
+			</dict>
+			<key>id</key>
+			<string>thingie</string>
+			<key>url</key>
+			<string>a-slightg</string>
+			<key>ext</key>
+			<string>m4a</string>
+			<key>script</key>
+			<string>follower</string>
+			<key>params</key>
+			<dict>
+				<key>k</key>
+				<real>0.01</real>
+			</dict>
+		</dict>
+	</array>
+    <key>ambiances</key>
+    <array>
+        <dict>
+            <key>url</key>
+            <string>amb01</string>
+            <key>deadly</key>
+            <true/>
+            <key>deadlyRadius</key>
+            <real>50</real>
+            <key>pos</key>
+            <string>1;1</string>
+            <key>inversion</key>
+            <dict>
+                <key>r0</key>
+                <real>20</real>
+                <key>r1</key>
+                <real>50</real>
+            </dict>
+        </dict>
+    </array>
+	<key>player</key>
+	<dict/>
+</dict>
+</plist>

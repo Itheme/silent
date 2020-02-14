@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08346C904AD0CDFDE294FFDA /* Pods_jo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9C39929226D12C46C225D6 /* Pods_jo.framework */; };
+		381AE9DD23F727B700C82F9C /* onboarding01.plist in Resources */ = {isa = PBXBuildFile; fileRef = 381AE9DC23F727B700C82F9C /* onboarding01.plist */; };
+		381AE9DF23F72C4100C82F9C /* onboarding02.plist in Resources */ = {isa = PBXBuildFile; fileRef = 381AE9DE23F72C4000C82F9C /* onboarding02.plist */; };
+		381AE9E123F72C5C00C82F9C /* onboarding03.plist in Resources */ = {isa = PBXBuildFile; fileRef = 381AE9E023F72C5C00C82F9C /* onboarding03.plist */; };
 		3826DD2123E9790800045BAA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826DD2023E9790800045BAA /* AppDelegate.swift */; };
 		3826DD2323E9790800045BAA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3826DD2223E9790800045BAA /* GameScene.sks */; };
 		3826DD2523E9790800045BAA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3826DD2423E9790800045BAA /* Actions.sks */; };
@@ -52,8 +56,7 @@
 		38FEDD6E23F5D28800986E05 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FEDD6D23F5D28700986E05 /* AudioManager.swift */; };
 		38FEDD7023F5D2F600986E05 /* Level2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD6F23F5D2F600986E05 /* Level2.plist */; };
 		38FEDD7223F5D9C600986E05 /* completion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 38FEDD7123F5D9C500986E05 /* completion.mp3 */; };
-		EF7BE2B1FF2F5E0FB1147FFF /* libPods-joTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0833EA42DE3CAFC39FFA7808 /* libPods-joTests.a */; };
-		F76CE42BBC9F2C7BD2EDA0A2 /* libPods-jo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2B1D3DAAB4232DD3EA4633 /* libPods-jo.a */; };
+		9F93D03A5604018A986E9395 /* Pods_joTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A54656D6C0C7F950E476238 /* Pods_joTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,9 +77,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0833EA42DE3CAFC39FFA7808 /* libPods-joTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-joTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1A2B1D3DAAB4232DD3EA4633 /* libPods-jo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-jo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2101CCE047761C4FDF111565 /* Pods-joTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-joTests.debug.xcconfig"; path = "Target Support Files/Pods-joTests/Pods-joTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2A54656D6C0C7F950E476238 /* Pods_joTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_joTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B9C39929226D12C46C225D6 /* Pods_jo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_jo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		381AE9DC23F727B700C82F9C /* onboarding01.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = onboarding01.plist; sourceTree = "<group>"; };
+		381AE9DE23F72C4000C82F9C /* onboarding02.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = onboarding02.plist; sourceTree = "<group>"; };
+		381AE9E023F72C5C00C82F9C /* onboarding03.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = onboarding03.plist; sourceTree = "<group>"; };
 		3826DD1D23E9790800045BAA /* jo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3826DD2023E9790800045BAA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3826DD2223E9790800045BAA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -138,7 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F76CE42BBC9F2C7BD2EDA0A2 /* libPods-jo.a in Frameworks */,
+				08346C904AD0CDFDE294FFDA /* Pods_jo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,7 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF7BE2B1FF2F5E0FB1147FFF /* libPods-joTests.a in Frameworks */,
+				9F93D03A5604018A986E9395 /* Pods_joTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +249,9 @@
 		3826DD5E23E9854C00045BAA /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				381AE9DC23F727B700C82F9C /* onboarding01.plist */,
+				381AE9DE23F72C4000C82F9C /* onboarding02.plist */,
+				381AE9E023F72C5C00C82F9C /* onboarding03.plist */,
 				3826DD5F23E9854C00045BAA /* Level1.plist */,
 				38FEDD6F23F5D2F600986E05 /* Level2.plist */,
 			);
@@ -294,8 +303,8 @@
 		6F21E1A0F2251497FFC47DC4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1A2B1D3DAAB4232DD3EA4633 /* libPods-jo.a */,
-				0833EA42DE3CAFC39FFA7808 /* libPods-joTests.a */,
+				2B9C39929226D12C46C225D6 /* Pods_jo.framework */,
+				2A54656D6C0C7F950E476238 /* Pods_joTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -322,6 +331,7 @@
 				3826DD1923E9790800045BAA /* Sources */,
 				3826DD1A23E9790800045BAA /* Frameworks */,
 				3826DD1B23E9790800045BAA /* Resources */,
+				E9F4C0F5B9F0F8E8528DFEE4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -420,6 +430,7 @@
 			files = (
 				38E9071023F2F63E00721C78 /* a-maj104-tailless-narrationback.m4a in Resources */,
 				383B515F23EC98D7005E7C94 /* follower.js in Resources */,
+				381AE9E123F72C5C00C82F9C /* onboarding03.plist in Resources */,
 				383B515423EC5BCA005E7C94 /* action02.mp3 in Resources */,
 				3826DD6D23E9D7F200045BAA /* steps01.mp3 in Resources */,
 				38FEDD7223F5D9C600986E05 /* completion.mp3 in Resources */,
@@ -430,6 +441,8 @@
 				38FEDD6623F47AE300986E05 /* action03.mp3 in Resources */,
 				3826DD6B23E9AD5E00045BAA /* ambtest.mp3 in Resources */,
 				38FEDD7023F5D2F600986E05 /* Level2.plist in Resources */,
+				381AE9DD23F727B700C82F9C /* onboarding01.plist in Resources */,
+				381AE9DF23F72C4100C82F9C /* onboarding02.plist in Resources */,
 				38E9071223F2F63E00721C78 /* a-noise-swipe.m4a in Resources */,
 				38E9070923F2F63E00721C78 /* a-glitch-tailless_.m4a in Resources */,
 				383B515223EC5A35005E7C94 /* action01.mp3 in Resources */,
@@ -525,6 +538,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E9F4C0F5B9F0F8E8528DFEE4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jo/Pods-jo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jo/Pods-jo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-jo/Pods-jo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
