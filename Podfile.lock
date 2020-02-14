@@ -5,17 +5,21 @@ PODS:
   - AudioKit/Core (4.9.3)
   - AudioKit/UI (4.9.3):
     - AudioKit/Core
+  - PureLayout (3.1.5)
 
 DEPENDENCIES:
   - AudioKit (~> 4.0)
+  - PureLayout
 
 SPEC REPOS:
   trunk:
     - AudioKit
+    - PureLayout
 
 SPEC CHECKSUMS:
   AudioKit: d025ecbb68f567bba15dab7ea80b8991155729f9
+  PureLayout: 9b4ad47b2f0388c84ff534af23d96e720c1b875a
 
-PODFILE CHECKSUM: 57876c5d6014a0d2e4a8a5a7c25ab1e2cf4085cd
+PODFILE CHECKSUM: 97ceb99a8fcc0533f3d7c3d04abf97e12aa4a209
 
 COCOAPODS: 1.8.4
